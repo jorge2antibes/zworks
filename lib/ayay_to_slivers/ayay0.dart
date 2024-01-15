@@ -32,6 +32,8 @@ class Ayay0 extends StatelessWidget {
   }
 }
 
+const double heightPercent = .46;
+
 class MyBeaches extends StatelessWidget {
   const MyBeaches({super.key});
 
@@ -40,7 +42,7 @@ class MyBeaches extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
 
     return SliverAppBar(
-      expandedHeight: screenSize.height * .46,
+      expandedHeight: screenSize.height * heightPercent,
       stretch: true,
       flexibleSpace: ListView.builder(
         scrollDirection: Axis.horizontal,
