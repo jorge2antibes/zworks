@@ -19,13 +19,16 @@ class Ayay0 extends StatelessWidget {
       scrollBehavior: const ConstantScrollBehavior(),
       title: 'Ayay0',
       home: const Scaffold(
-        body: Center(
-          child: CustomScrollView(
-            slivers: [
-              MyBeaches(),
-              OtherPeopleBeaches(),
-            ],
-          ),
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            CustomScrollView(
+              slivers: [
+                MyBeaches(),
+                OtherPeopleBeaches(),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -51,9 +54,15 @@ class MyBeaches extends StatelessWidget {
         itemBuilder: (context, index) {
           final DailyForecast dailyForecast =
               Server.getDailyForecastByID(index);
-          return Image.network(
-            dailyForecast.imageId,
-            fit: BoxFit.cover,
+          return Stack(
+            //this is the trick so stack can stretch
+            fit: StackFit.passthrough,
+            children: [
+              Image.network(
+                dailyForecast.imageId,
+                fit: BoxFit.cover,
+              ),
+            ],
           );
         },
       ),
@@ -190,7 +199,7 @@ class ConstantScrollBehavior extends ScrollBehavior {
       child;
 
   @override
-  TargetPlatform getPlatform(BuildContext context) => TargetPlatform.macOS;
+  TargetPlatform getPlatform(BuildContext context) => TargetPlatform.iOS;
 
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) =>
