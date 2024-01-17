@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 /// https://dartpad-workshops-io2021.web.app/getting_started_with_slivers
 
 void main() {
-  runApp(const Ayay0());
+  runApp(const Ayay1());
 }
 
-class Ayay0 extends StatelessWidget {
-  const Ayay0({super.key});
+class Ayay1 extends StatelessWidget {
+  const Ayay1({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // This is the theme of your application.
       theme: ThemeData.dark(),
       scrollBehavior: const ConstantScrollBehavior(),
-      title: 'Ayay0',
+      title: 'Ayay1',
       home: const Scaffold(
         body: Stack(
           alignment: Alignment.center,
@@ -42,100 +41,71 @@ class MyBeaches extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery
-        .of(context)
-        .size;
+    var screenSize = MediaQuery.of(context).size;
     var devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     return SliverAppBar(
       expandedHeight: screenSize.height * heightPercent,
       stretch: true,
-      flexibleSpace: ListView.builder(
+      flexibleSpace: CustomScrollView(
         cacheExtent: screenSize.width * devicePixelRatio,
         scrollDirection: Axis.horizontal,
-        itemCount: 7,
-        itemExtent: screenSize.width / 2,
-        itemBuilder: (context, index) {
-          final DailyForecast dailyForecast =
-          Server.getDailyForecastByID(index);
-          return Stack(
-            //this is the trick so stack can stretch
-            fit: StackFit.passthrough,
-            children: [
-              Image.network(
-                dailyForecast.imageId,
-                fit: BoxFit.cover,
-              ),
-              Placeholder(),
-            ],
-          );
-        },
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final DailyForecast dailyForecast =
+                    Server.getDailyForecastByID(index);
+                return Container(
+                  width: screenSize.width * .50,
+                  child: Stack(
+                    //this is the trick so stack can stretch
+                    fit: StackFit.passthrough,
+                    children: [
+                      Image.network(
+                        dailyForecast.imageId,
+                        fit: BoxFit.cover,
+                      ),
+                      Placeholder(),
+                    ],
+                  ),
+                );
+              },
+              childCount: _kDummyData.length,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-// class MyBeaches extends StatelessWidget {
-//   const MyBeaches({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var screenSize = MediaQuery.of(context).size;
-//
-//     return SliverGrid(
-//       delegate: SliverChildBuilderDelegate(
-//         (context, index) {
-//           final DailyForecast dailyForecast =
-//               Server.getDailyForecastByID(index);
-//           return SizedBox(
-//             height: screenSize.height / 2,
-//             child: Image.network(
-//               dailyForecast.imageId,
-//               fit: BoxFit.cover,
-//             ),
-//           );
-//         },
-//         childCount: 7,
-//       ),
-//       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//         crossAxisCount: 2,
-//         childAspectRatio: screenSize.width / screenSize.height,
-//       ),
-//     );
-//   }
-// }
 
 class OtherPeopleBeaches extends StatelessWidget {
   const OtherPeopleBeaches({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery
-        .of(context)
-        .size;
+    var screenSize = MediaQuery.of(context).size;
 
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate(
-            (context, index) {
-          final DailyForecast dailyForecast =
-          Server.getDailyForecastByID(index);
-          return Stack(
-            fit: StackFit.passthrough,
-            children: [
-              Image.network(
-                dailyForecast.imageId,
-                fit: BoxFit.cover,
-              ),
-              Placeholder(),
-            ],
-          );
-        },
-        childCount: 7,
-      ),
+    return SliverGrid.builder(
+      itemCount: _kDummyData.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: screenSize.width / screenSize.height,
       ),
+      itemBuilder: (context, index) {
+        final DailyForecast dailyForecast = Server.getDailyForecastByID(index);
+        return Stack(
+          fit: StackFit.passthrough,
+          children: [
+            Image.network(
+              dailyForecast.imageId,
+              fit: BoxFit.cover,
+            ),
+            Placeholder(),
+          ],
+        );
+      },
     );
   }
 }
@@ -154,7 +124,7 @@ const Map<int, DailyForecast> _kDummyData = {
   ),
   1: DailyForecast(
     id: 1,
-    imageId: '${baseAssetURL}assets/day_1.jpeg',
+    imageId: headerImage,
   ),
   2: DailyForecast(
     id: 2,
@@ -162,7 +132,7 @@ const Map<int, DailyForecast> _kDummyData = {
   ),
   3: DailyForecast(
     id: 3,
-    imageId: '${baseAssetURL}assets/day_3.jpeg',
+    imageId: headerImage,
   ),
   4: DailyForecast(
     id: 4,
@@ -170,11 +140,27 @@ const Map<int, DailyForecast> _kDummyData = {
   ),
   5: DailyForecast(
     id: 5,
-    imageId: '${baseAssetURL}assets/day_5.jpeg',
+    imageId: headerImage,
   ),
   6: DailyForecast(
     id: 6,
     imageId: '${baseAssetURL}assets/day_6.jpeg',
+  ),
+  7: DailyForecast(
+    id: 7,
+    imageId: headerImage,
+  ),
+  8: DailyForecast(
+    id: 8,
+    imageId: '${baseAssetURL}assets/day_1.jpeg',
+  ),
+  9: DailyForecast(
+    id: 9,
+    imageId: '${baseAssetURL}assets/day_3.jpeg',
+  ),
+  10: DailyForecast(
+    id: 10,
+    imageId: '${baseAssetURL}assets/day_5.jpeg',
   ),
 };
 
@@ -183,7 +169,7 @@ class Server {
       _kDummyData.values.toList();
 
   static DailyForecast getDailyForecastByID(int id) {
-    assert(id >= 0 && id <= 6);
+    assert(id >= 0 && id <= _kDummyData.length - 1);
     return _kDummyData[id]!;
   }
 }
@@ -202,13 +188,13 @@ class ConstantScrollBehavior extends ScrollBehavior {
   const ConstantScrollBehavior();
 
   @override
-  Widget buildScrollbar(BuildContext context, Widget child,
-      ScrollableDetails details) =>
+  Widget buildScrollbar(
+          BuildContext context, Widget child, ScrollableDetails details) =>
       child;
 
   @override
-  Widget buildOverscrollIndicator(BuildContext context, Widget child,
-      ScrollableDetails details) =>
+  Widget buildOverscrollIndicator(
+          BuildContext context, Widget child, ScrollableDetails details) =>
       child;
 
   @override
