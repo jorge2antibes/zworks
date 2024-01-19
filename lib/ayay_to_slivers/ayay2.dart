@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sbox1/ayay_to_slivers/extensions.dart';
 
 /// https://dartpad-workshops-io2021.web.app/getting_started_with_slivers
-
+/// https://medium.com/make-android/save-your-memory-usage-by-optimizing-network-image-in-flutter-cbc9f8af47cd#:~:text=The%20method%20for%20resizing%20images,size%20specified%20in%20these%20properties.
 void main() {
+  debugInvertOversizedImages = true;
+
   runApp(const Ayay1());
 }
 
@@ -34,6 +40,18 @@ class Ayay1 extends StatelessWidget {
   }
 }
 
+class ImgPicked {
+  final XFile? image;
+  final int? aspectRatio;
+
+  ImgPicked({this.image, this.aspectRatio});
+}
+
+class ImagesPicket extends ValueNotifier<Set<ImgPicked>> {
+  ImagesPicket(super.value);
+
+}
+
 const double heightPercent = .46;
 
 class MyBeaches extends StatelessWidget {
@@ -43,6 +61,8 @@ class MyBeaches extends StatelessWidget {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+
+    print('devidePixelRatio: $devicePixelRatio');
 
     return SliverAppBar(
       expandedHeight: screenSize.height * heightPercent,
@@ -63,6 +83,8 @@ class MyBeaches extends StatelessWidget {
                     fit: StackFit.passthrough,
                     children: [
                       Image.network(
+                        // cacheWidth: screenSize.width.cacheSize(context),
+                        // cacheHeight: screenSize.height.cacheSize(context),
                         dailyForecast.imageId,
                         fit: BoxFit.cover,
                       ),
@@ -86,6 +108,7 @@ class OtherPeopleBeaches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     return SliverGrid.builder(
       itemCount: _kDummyData.length,
@@ -95,14 +118,57 @@ class OtherPeopleBeaches extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final DailyForecast dailyForecast = Server.getDailyForecastByID(index);
+        var cacheWidth = screenSize.width.cacheSize(context) / 2;
+        var cacheHeight = screenSize.height.cacheSize(context) / 2;
+
+        print(
+            'devicePixelRatio: $devicePixelRatio, index: $index, cacheWidth: $cacheWidth, cacheHeight: $cacheHeight');
+
         return Stack(
           fit: StackFit.passthrough,
           children: [
-            Image.network(
-              dailyForecast.imageId,
-              fit: BoxFit.cover,
+            AspectRatio(
+              aspectRatio: devicePixelRatio,
+              child: Image.network(
+                // cacheWidth: 360,
+                // cacheHeight: 718,
+                // cacheWidth: cacheWidth.round(),
+                cacheHeight: cacheHeight.round(),
+                dailyForecast.imageId,
+                fit: BoxFit.cover,
+              ),
             ),
-            Placeholder(),
+            Center(
+              child: TextButton(
+                onPressed: () async {
+                  XFile? xFile;
+                  if (index.isEven) {
+                    xFile = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    var stopWatch = Stopwatch()..start();
+                    var decodedImage =
+                        await decodeImageFromList(await xFile!.readAsBytes());
+                    stopWatch.stop();
+                    var decodeImageAspectRatio = decodedImage.width / decodedImage.height;
+                    print(
+                      '''decodedImage: ${xFile.name}, 
+                      index: $index, 
+                      timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
+                      decodedImage.width: ${decodedImage.width}, 
+                      decodedImage.height: ${decodedImage.height},
+                      decodeImageAspectRatio: $decodeImageAspectRatio''',
+                    );
+                  } else {
+                    xFile = await ImagePicker()
+                        .pickImage(source: ImageSource.camera);
+                    var image = Image.memory(await xFile!.readAsBytes());
+                    print(
+                        'decodedImage: ${xFile.name}, index: $index, decodedImage.width: ${image.width}, decodedImage.height: ${image.height}');
+                  }
+                },
+                child: Text('newImage'),
+              ),
+            ),
           ],
         );
       },
@@ -136,7 +202,8 @@ const Map<int, DailyForecast> _kDummyData = {
   ),
   4: DailyForecast(
     id: 4,
-    imageId: '${baseAssetURL}assets/day_4.jpeg',
+    imageId:
+        'https://plus.unsplash.com/premium_photo-1680740103993-21639956f3f0?q=80&w=1588&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   ),
   5: DailyForecast(
     id: 5,

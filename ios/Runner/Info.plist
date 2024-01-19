@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<String> jdc permission for photos<String/>
+	<key>NSCameraUsageDescription</key>
+	<String> jdc permission for photos<String/>
+	<key>NSMicrophoneUsageDescription</key>
+	<String> jdc permission for photos<String/>
 </dict>
 </plist>
