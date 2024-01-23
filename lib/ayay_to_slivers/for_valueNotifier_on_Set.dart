@@ -28,7 +28,7 @@ void main() {
   );
 }
 
-mixin OnCollections<S extends Set<E>, E extends ImgPicked> on ValueNotifier<S> {
+mixin OnCollections<S extends Set<E>, E extends ThingImg> on ValueNotifier<S> {
   void add(E e) {
     value.add(e);
     notifyListeners();

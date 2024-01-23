@@ -47,28 +47,28 @@ class Ayay1 extends StatelessWidget {
 final goGet = GetIt.I;
 
 void bootstrap() {
-  goGet.registerSingleton<MyImages>(MyImages(<ImgPicked>{}));
+  goGet.registerSingleton<MyImages>(MyImages(<ThingImg>{}));
 
-  goGet.registerSingleton<PeopleImages>(PeopleImages(<ImgPicked>{}));
+  goGet.registerSingleton<PeopleImages>(PeopleImages(<ThingImg>{}));
 }
 
-class ImgPicked {
+class ThingImg {
   final XFile? image;
   final double? aspectRatio;
 
-  ImgPicked({this.image, this.aspectRatio});
+  ThingImg({this.image, this.aspectRatio});
 
   @override
   String toString() {
-    return '''ImgPicked: image: $image, aspectRatio: $aspectRatio''';
+    return '''ThingImg: image: $image, aspectRatio: $aspectRatio''';
   }
 }
 
-class MyImages extends ValueNotifier<Set<ImgPicked>> with OnCollections {
+class MyImages extends ValueNotifier<Set<ThingImg>> with OnCollections {
   MyImages(super.value);
 }
 
-class PeopleImages extends ValueNotifier<Set<ImgPicked>> with OnCollections {
+class PeopleImages extends ValueNotifier<Set<ThingImg>> with OnCollections {
   PeopleImages(super.value);
 }
 
@@ -81,7 +81,7 @@ class MyBeaches extends StatelessWidget with GetItMixin {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final myImages = watch<MyImages, Set<ImgPicked>>();
+    final watchedImages = watch<MyImages, Set<ThingImg>>();
 
     print('devidePixelRatio: $devicePixelRatio');
 
@@ -95,21 +95,89 @@ class MyBeaches extends StatelessWidget with GetItMixin {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final DailyForecast dailyForecast =
-                    Server.getDailyForecastByID(index);
+                ThingImg? thingImg;
+
+                if (index < watchedImages.length) {
+                  thingImg = watchedImages.elementAt(index);
+                  print(watchedImages.elementAt(index));
+                }
+
                 return Container(
                   width: screenSize.width * .50,
                   child: Stack(
                     //this is the trick so stack can stretch
                     fit: StackFit.passthrough,
                     children: [
-                      Image.network(
-                        // cacheWidth: screenSize.width.cacheSize(context),
-                        // cacheHeight: screenSize.height.cacheSize(context),
-                        dailyForecast.imageId,
-                        fit: BoxFit.cover,
-                      ),
-                      Placeholder(),
+                      if (watchedImages.isNotEmpty &&
+                          index < watchedImages.length)
+                        // Placeholder()
+                        LayoutBuilder(
+                          builder: (context, constraints) => buildImage(
+                              context: context,
+                              thingImg: thingImg!,
+                              constraints: constraints),
+                        )
+                      else
+                        Placeholder(),
+                      if (index <= watchedImages.length)
+                        Center(
+                          child: TextButton(
+                            onPressed: () async {
+                              XFile? xFile;
+                              if (index.isEven) {
+                                xFile = await ImagePicker()
+                                    .pickImage(source: ImageSource.gallery);
+                                var stopWatch = Stopwatch()..start();
+                                var decodedImage = await decodeImageFromList(
+                                    await xFile!.readAsBytes());
+                                stopWatch.stop();
+                                var decodeImageAspectRatio =
+                                    (decodedImage.width / decodedImage.height);
+                                final imagesState = goGet<MyImages>();
+                                imagesState.addOrReplaceAt(
+                                  index,
+                                  ThingImg(
+                                      image: xFile,
+                                      aspectRatio: decodeImageAspectRatio),
+                                );
+                                print(
+                                  '''decodedImage: ${xFile.name}, 
+                                     index: $index, 
+                                     timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
+                                     decodedImage.width: ${decodedImage.width}, 
+                                     decodedImage.height: ${decodedImage.height},
+                                     decodeImageAspectRatio: $decodeImageAspectRatio''',
+                                );
+                                print(imagesState.value.elementAt(index));
+                              } else {
+                                xFile = await ImagePicker()
+                                    .pickImage(source: ImageSource.camera);
+                                var stopWatch = Stopwatch()..start();
+                                var decodedImage = await decodeImageFromList(
+                                    await xFile!.readAsBytes());
+                                stopWatch.stop();
+                                var decodeImageAspectRatio =
+                                    decodedImage.width / decodedImage.height;
+                                final images = goGet<MyImages>();
+                                images.addOrReplaceAt(
+                                  index,
+                                  ThingImg(
+                                      image: xFile,
+                                      aspectRatio: decodeImageAspectRatio),
+                                );
+                                print(
+                                  '''decodedImage: ${xFile.name}, 
+                                    index: $index, 
+                                    timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
+                                    decodedImage.width: ${decodedImage.width}, 
+                                    decodedImage.height: ${decodedImage.height},
+                                    decodeImageAspectRatio: $decodeImageAspectRatio''',
+                                );
+                              }
+                            },
+                            child: Text('newImage'),
+                          ),
+                        ),
                     ],
                   ),
                 );
@@ -130,8 +198,7 @@ class OtherPeopleBeaches extends StatelessWidget with GetItMixin {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final watchedImages = watch<PeopleImages, Set<ImgPicked>>();
+    final watchedImages = watch<PeopleImages, Set<ThingImg>>();
 
     return SliverGrid.builder(
       itemCount: _kDummyData.length,
@@ -140,23 +207,10 @@ class OtherPeopleBeaches extends StatelessWidget with GetItMixin {
         childAspectRatio: screenSize.width / screenSize.height,
       ),
       itemBuilder: (context, index) {
-        final DailyForecast dailyForecast = Server.getDailyForecastByID(index);
-        final width = screenSize.width / 2;
-        final height = screenSize.height / 2;
-        final cacheWidth = width.renderSize(context);
-        final cacheHeight = height.renderSize(context);
-        final imageFile = File(watchedImages.elementAt(index).image!.path);
-        final imageAspectRatio = watchedImages.elementAt(index).aspectRatio;
-
-        print('''Geometries: 
-            devicePixelRatio: $devicePixelRatio, 
-            index: $index, 
-            width: $width, 
-            height: $height,
-            chacheWidth: $cacheWidth, 
-            chacheHeight: $cacheHeight''');
+        ThingImg? thingImg;
 
         if (index < watchedImages.length) {
+          thingImg = watchedImages.elementAt(index);
           print(watchedImages.elementAt(index));
         }
         return Stack(
@@ -165,10 +219,9 @@ class OtherPeopleBeaches extends StatelessWidget with GetItMixin {
             if (watchedImages.isNotEmpty && index < watchedImages.length)
               // Placeholder()
               LayoutBuilder(
-                builder: (context, constraints) => catchImage(
+                builder: (context, constraints) => buildImage(
                     context: context,
-                    image: imageFile,
-                    aspectRatio: imageAspectRatio!,
+                    thingImg: thingImg!,
                     constraints: constraints),
               )
             else
@@ -176,18 +229,8 @@ class OtherPeopleBeaches extends StatelessWidget with GetItMixin {
               ///The size of the image displayed on the screen is determined by
               /// the ‘width’ and ‘height’ properties, but the size of the rendered
               /// image is determined by ‘cacheWidth’ and ‘cacheHeight’.
-              Image.network(
-                // width: width,
-                // height: height,
-                // cacheWidth: 360.cacheSize(context),
-                // cacheHeight: 718.cacheSize(context),
-                // cacheHeight: 718,
-                // cacheWidth: cacheWidth.round(),
-                // cacheHeight: cacheHeight.round(),
-                dailyForecast.imageId,
-                fit: BoxFit.cover,
-              ),
-            if (index == watchedImages.length)
+              Placeholder(),
+            if (index <= watchedImages.length)
               Center(
                 child: TextButton(
                   onPressed: () async {
@@ -196,49 +239,58 @@ class OtherPeopleBeaches extends StatelessWidget with GetItMixin {
                       xFile = await ImagePicker()
                           .pickImage(source: ImageSource.gallery);
                       var stopWatch = Stopwatch()..start();
-                      var decodedImage =
-                          await decodeImageFromList(await xFile!.readAsBytes());
+                      final uInt8List = await xFile!.readAsBytes();
+                      var decodedImage = await decodeImageFromList(uInt8List);
                       stopWatch.stop();
                       var decodeImageAspectRatio =
                           (decodedImage.width / decodedImage.height);
                       final imagesState = goGet<PeopleImages>();
                       imagesState.addOrReplaceAt(
                         index,
-                        ImgPicked(
+                        ThingImg(
                             image: xFile, aspectRatio: decodeImageAspectRatio),
                       );
                       print(
-                        '''decodedImage: ${xFile.name}, 
-                      index: $index, 
-                      timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
-                      decodedImage.width: ${decodedImage.width}, 
-                      decodedImage.height: ${decodedImage.height},
-                      decodeImageAspectRatio: $decodeImageAspectRatio''',
+                        '''decodedImage: 
+                        name: ${xFile.name},
+                        mimeType: ${xFile.mimeType},
+                        index: $index, 
+                        timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
+                        decodedImage.width: ${decodedImage.width}, 
+                        decodedImage.height: ${decodedImage.height},
+                        decodeImageAspectRatio: $decodeImageAspectRatio''',
                       );
                       print(imagesState.value.elementAt(index));
                     } else {
+                      ///todo: uncomment
+                      // xFile = await ImagePicker()
+                      //     .pickImage(source: ImageSource.camera);
+                      ///todo: remove
                       xFile = await ImagePicker()
-                          .pickImage(source: ImageSource.camera);
+                          .pickImage(source: ImageSource.gallery);
                       var stopWatch = Stopwatch()..start();
-                      var decodedImage =
-                          await decodeImageFromList(await xFile!.readAsBytes());
+                      final uInt8List = await xFile!.readAsBytes();
+                      var decodedImage = await decodeImageFromList(uInt8List);
                       stopWatch.stop();
                       var decodeImageAspectRatio =
                           decodedImage.width / decodedImage.height;
-                      final images = goGet<PeopleImages>();
-                      images.addOrReplaceAt(
+                      final imagesState = goGet<PeopleImages>();
+                      imagesState.addOrReplaceAt(
                         index,
-                        ImgPicked(
+                        ThingImg(
                             image: xFile, aspectRatio: decodeImageAspectRatio),
                       );
                       print(
-                        '''decodedImage: ${xFile.name}, 
-                      index: $index, 
-                      timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
-                      decodedImage.width: ${decodedImage.width}, 
-                      decodedImage.height: ${decodedImage.height},
-                      decodeImageAspectRatio: $decodeImageAspectRatio''',
+                        '''decodedImage: 
+                        name: ${xFile.name},
+                        mimeType: ${xFile.mimeType},
+                        index: $index, 
+                        timeEllapsed: ${stopWatch.elapsedMilliseconds}ms, 
+                        decodedImage.width: ${decodedImage.width}, 
+                        decodedImage.height: ${decodedImage.height},
+                        decodeImageAspectRatio: $decodeImageAspectRatio''',
                       );
+                      print(imagesState.value.elementAt(index));
                     }
                   },
                   child: Text('newImage'),
@@ -251,25 +303,42 @@ class OtherPeopleBeaches extends StatelessWidget with GetItMixin {
   }
 }
 
-Image catchImage({
+Image buildImage({
   required BuildContext context,
-  required File image,
-  required double aspectRatio,
+  required ThingImg thingImg,
   required BoxConstraints constraints,
 }) {
   final width = constraints.maxWidth;
   final height = constraints.maxHeight;
   int? cacheWidth;
   int? cacheHeight;
+  final image = thingImg.image!.path;
 
-  if (aspectRatio > 0) {
-    cacheHeight = height.renderSize(context);
+  if (thingImg.aspectRatio! > 1) {
+    ///NOT ok
+    // cacheHeight = height.renderSize(context);
+    ///OK!!!
+    cacheHeight = width.renderSize(context);
+    ///Ok too!!!
+    // cacheWidth = width.renderSize(context);
+    ///NOT ok
+    // cacheWidth = height.renderSize(context);
   } else {
     cacheWidth = width.renderSize(context);
+    // cacheHeight = height.renderSize(context);
   }
 
+  print('''BuildImage:
+            Geometries: 
+            width: $width, 
+            height: $height,
+            chacheWidth: $cacheWidth, 
+            chacheHeight: $cacheHeight,
+            aspectRatio: ${thingImg.aspectRatio}
+            ''');
+
   return Image.file(
-    image,
+    File(image),
     width: width,
     height: height,
     fit: BoxFit.cover,

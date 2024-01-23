@@ -51,5 +51,9 @@
 	<String> jdc permission for photos<String/>
 	<key>NSMicrophoneUsageDescription</key>
 	<String> jdc permission for photos<String/>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+       <key>NSAllowsArbitraryLoads</key><true/>
+    </dict>
 </dict>
 </plist>
