@@ -36,7 +36,7 @@ class Ayay1 extends StatelessWidget with GetItMixin {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      title: 'Ayay3',
+      title: 'Ayay4 final',
       home: Scaffold(
         body: Column(
           children: [
@@ -49,16 +49,8 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                       alignment: Alignment.center,
                       children: [
                         if (imagesState.isNotEmpty)
-                          LayoutBuilder(
-                            builder: (context, constraints) {
-                              print('constraints: $constraints');
-                              return buildImageRefactored(
-                                index: 0,
-                                context: context,
-                                thingImg: imagesState.elementAt(0),
-                                constraints: constraints,
-                              );
-                            },
+                          CoveredImage(
+                            thingImg: imagesState.elementAt(0),
                           )
                         else
                           const Placeholder(
@@ -68,24 +60,15 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                           onPressed: () async {
                             final xFile = await ImagePicker()
                                 .pickImage(source: ImageSource.gallery);
-                            final uInt8List = await xFile!.readAsBytes();
-                            final decodedImage =
-                                await decodeImageFromList(uInt8List);
-                            var decodeImageAspectRatio =
-                                decodedImage.width / decodedImage.height;
+                            final file = File(xFile!.path);
+                            final thingImage = ThingImg(image: file);
                             final imagesState = goGet<ImagesState>();
-                            final thingImage = ThingImg(
-                                image: xFile,
-                                aspectRatio: decodeImageAspectRatio);
                             imagesState.addOrReplaceAt(0, thingImage);
                             print(
                               '''decodedImage: 
                           name: ${xFile.name},
                           mimeType: ${xFile.mimeType},
-                          index: 0, 
-                          decodedImage.width: ${decodedImage.width}, 
-                          decodedImage.height: ${decodedImage.height},
-                          decodeImageAspectRatio: $decodeImageAspectRatio''',
+                          index: 0, ''',
                             );
                             print(imagesState.value.elementAt(0));
                           },
@@ -101,48 +84,28 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            print('constraints: $constraints');
-                            print('ImageState: ${imagesState}');
-                            if (imagesState.isNotEmpty &&
-                                imagesState.length >= 2) {
-                              return buildImageRefactored(
-                                index: 1,
-                                context: context,
-                                thingImg: imagesState.elementAt(1),
-                                constraints: constraints,
-                              );
-                            } else {
-                              return const Placeholder(
-                                color: Colors.red,
-                              );
-                            }
-                          },
-                        ),
+                        if (imagesState.isNotEmpty && imagesState.length > 1)
+                          CoveredImage(
+                            thingImg: imagesState.elementAt(1),
+                          )
+                        else
+                          const Placeholder(
+                            color: Colors.red,
+                          ),
                         if (imagesState.isNotEmpty && imagesState.length > 0)
                           TextButton(
                             onPressed: () async {
                               final xFile = await ImagePicker()
                                   .pickImage(source: ImageSource.gallery);
-                              final uInt8List = await xFile!.readAsBytes();
-                              final decodedImage =
-                                  await decodeImageFromList(uInt8List);
-                              var decodeImageAspectRatio =
-                                  decodedImage.width / decodedImage.height;
+                              final file = File(xFile!.path);
+                              final thingImage = ThingImg(image: file);
                               final imagesState = goGet<ImagesState>();
-                              final thingImage = ThingImg(
-                                  image: xFile,
-                                  aspectRatio: decodeImageAspectRatio);
                               imagesState.addOrReplaceAt(1, thingImage);
                               print(
                                 '''decodedImage: 
                                     name: ${xFile.name},
                                     mimeType: ${xFile.mimeType},
-                                    index: 1, 
-                                    decodedImage.width: ${decodedImage.width}, 
-                                    decodedImage.height: ${decodedImage.height},
-                                    decodeImageAspectRatio: $decodeImageAspectRatio''',
+                                    index: 1, ''',
                               );
                               print(imagesState.value.elementAt(1));
                             },
@@ -158,46 +121,28 @@ class Ayay1 extends StatelessWidget with GetItMixin {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      print('constraints: $constraints');
-                      print('ImageState: ${imagesState}');
-                      if (imagesState.isNotEmpty && imagesState.length >= 3) {
-                        return buildImageRefactored(
-                          index: 2,
-                          context: context,
-                          thingImg: imagesState.elementAt(2),
-                          constraints: constraints,
-                        );
-                      } else {
-                        return const Placeholder(
-                          color: Colors.blue,
-                        );
-                      }
-                    },
-                  ),
+                  if (imagesState.isNotEmpty && imagesState.length > 2)
+                    CoveredImage(
+                      thingImg: imagesState.elementAt(2),
+                    )
+                  else
+                    const Placeholder(
+                      color: Colors.blue,
+                    ),
                   if (imagesState.isNotEmpty && imagesState.length > 1)
                     TextButton(
                       onPressed: () async {
                         final xFile = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
-                        final uInt8List = await xFile!.readAsBytes();
-                        final decodedImage =
-                            await decodeImageFromList(uInt8List);
-                        var decodeImageAspectRatio =
-                            decodedImage.width / decodedImage.height;
+                        final file = File(xFile!.path);
+                        final thingImage = ThingImg(image: file);
                         final imagesState = goGet<ImagesState>();
-                        final thingImage = ThingImg(
-                            image: xFile, aspectRatio: decodeImageAspectRatio);
                         imagesState.addOrReplaceAt(2, thingImage);
                         print(
                           '''decodedImage: 
                                     name: ${xFile.name},
                                     mimeType: ${xFile.mimeType},
-                                    index: 2, 
-                                    decodedImage.width: ${decodedImage.width}, 
-                                    decodedImage.height: ${decodedImage.height},
-                                    decodeImageAspectRatio: $decodeImageAspectRatio''',
+                                    index: 2, ''',
                         );
                         print(imagesState.value.elementAt(1));
                       },
@@ -210,46 +155,28 @@ class Ayay1 extends StatelessWidget with GetItMixin {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      print('constraints: $constraints');
-                      print('ImageState: ${imagesState}');
-                      if (imagesState.isNotEmpty && imagesState.length >= 4) {
-                        return buildImageRefactored(
-                          index: 3,
-                          context: context,
-                          thingImg: imagesState.elementAt(3),
-                          constraints: constraints,
-                        );
-                      } else {
-                        return const Placeholder(
-                          color: Colors.green,
-                        );
-                      }
-                    },
-                  ),
+                  if (imagesState.isNotEmpty && imagesState.length > 3)
+                    CoveredImage(
+                      thingImg: imagesState.elementAt(3),
+                    )
+                  else
+                    const Placeholder(
+                      color: Colors.green,
+                    ),
                   if (imagesState.isNotEmpty && imagesState.length > 2)
                     TextButton(
                       onPressed: () async {
                         final xFile = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
-                        final uInt8List = await xFile!.readAsBytes();
-                        final decodedImage =
-                            await decodeImageFromList(uInt8List);
-                        var decodeImageAspectRatio =
-                            decodedImage.width / decodedImage.height;
+                        final file = File(xFile!.path);
+                        final thingImage = ThingImg(image: file);
                         final imagesState = goGet<ImagesState>();
-                        final thingImage = ThingImg(
-                            image: xFile, aspectRatio: decodeImageAspectRatio);
                         imagesState.addOrReplaceAt(3, thingImage);
                         print(
                           '''decodedImage: 
                                     name: ${xFile.name},
                                     mimeType: ${xFile.mimeType},
-                                    index: 3, 
-                                    decodedImage.width: ${decodedImage.width}, 
-                                    decodedImage.height: ${decodedImage.height},
-                                    decodeImageAspectRatio: $decodeImageAspectRatio''',
+                                    index: 3, ''',
                         );
                         print(imagesState.value.elementAt(1));
                       },
@@ -265,6 +192,10 @@ class Ayay1 extends StatelessWidget with GetItMixin {
   }
 }
 
+///The size of the image displayed on the screen is determined by
+/// the ‘width’ and ‘height’ properties, but the size of the rendered
+/// image is determined by ‘cacheWidth’ which is he width the image should decode to and cache.
+/// and ‘cacheHeight’ which is the height the image should decode to and cache..
 class CoveredImage extends StatelessWidget {
   const CoveredImage({super.key, required this.thingImg});
 
@@ -278,7 +209,11 @@ class CoveredImage extends StatelessWidget {
         final constrainedHeight = constraints.maxHeight;
         final constrainedAspectRatio = constrainedWidth / constrainedHeight;
         final imageFile = File(thingImg.image!.path);
+        // The width the image should decode to and cache.
+        // At least one of this and [height] must be non-null.
         int? cacheWidth;
+        // The height the image should decode to and cache.
+        // At least one of this and [width] must be non-null.
         int? cacheHeight;
 
         if (constrainedAspectRatio < 1) {
@@ -297,7 +232,6 @@ class CoveredImage extends StatelessWidget {
             chacheWidth: $cacheWidth, 
             chacheHeight: $cacheHeight,
             constrainedAspectRatio: $constrainedAspectRatio,
-            thingImage.aspectRatio: ${thingImg.aspectRatio}
             ''');
 
         return Image.file(
@@ -313,164 +247,16 @@ class CoveredImage extends StatelessWidget {
   }
 }
 
-///The size of the image displayed on the screen is determined by
-/// the ‘width’ and ‘height’ properties, but the size of the rendered
-/// image is determined by ‘cacheWidth’ and ‘cacheHeight’.
-Image buildImageRefactored({
-  required int index,
-  required BuildContext context,
-  required ThingImg thingImg,
-  required BoxConstraints constraints,
-}) {
-  final constrainedWidth = constraints.maxWidth;
-  final constrainedHeight = constraints.maxHeight;
-
-  // The width the image should decode to and cache.
-  // At least one of this and [height] must be non-null.
-  int? cacheWidth;
-
-  // The height the image should decode to and cache.
-  // At least one of this and [width] must be non-null.
-  int? cacheHeight;
-  final image = thingImg.image!.path;
-  final constrainedAspectRatio = constrainedWidth / constrainedHeight;
-
-  if (constrainedAspectRatio < 1) {
-    cacheWidth = constrainedWidth.renderSize(context);
-  } else if (constrainedAspectRatio > 1) {
-    cacheHeight = constrainedHeight.renderSize(context);
-  } else {
-    print('ERROR');
-  }
-
-  print('''BuildImageRefactored$index:
-            Geometries: 
-            constrainedWidth: $constrainedWidth, 
-            constrainedHeight: $constrainedHeight,
-            chacheWidth: $cacheWidth, 
-            chacheHeight: $cacheHeight,
-            constrainedAspectRatio: $constrainedAspectRatio,
-            thingImage.aspectRatio: ${thingImg.aspectRatio}
-            ''');
-
-  return Image.file(
-    File(image),
-    width: constrainedWidth,
-    height: constrainedHeight,
-    fit: BoxFit.cover,
-    cacheWidth: cacheWidth,
-    cacheHeight: cacheHeight,
-  );
-}
-
-///The size of the image displayed on the screen is determined by
-/// the ‘width’ and ‘height’ properties, but the size of the rendered
-/// image is determined by ‘cacheWidth’ and ‘cacheHeight’.
-Image buildImage({
-  required int index,
-  required BuildContext context,
-  required ThingImg thingImg,
-  required BoxConstraints constraints,
-}) {
-  final constrainedWidth = constraints.maxWidth;
-  final constrainedHeight = constraints.maxHeight;
-
-  /// The width the image should decode to and cache.
-  /// At least one of this and [height] must be non-null.
-  int? cacheWidth;
-
-  /// The height the image should decode to and cache.
-  /// At least one of this and [width] must be non-null.
-  int? cacheHeight;
-  final image = thingImg.image!.path;
-  final constrainedAspectRatio = constrainedWidth / constrainedHeight;
-
-  if (thingImg.aspectRatio! < 1 && constrainedAspectRatio < 1) {
-    ///NOT OK
-    // cacheHeight = constrainedHeight.renderSize(context);
-    ///OK
-    cacheWidth = constrainedWidth.renderSize(context);
-
-    ///OK
-    // cacheHeight = constrainedWidth.renderSize(context);
-    ///NOT OK
-    // cacheWidth = constrainedHeight.renderSize(context);
-  } else if (thingImg.aspectRatio! > 1 && constrainedAspectRatio < 1) {
-    ///NOT OK
-    // cacheHeight = constrainedHeight.renderSize(context);
-    ///OK
-    cacheWidth = constrainedWidth.renderSize(context);
-
-    ///OK
-    // cacheHeight = constrainedWidth.renderSize(context);
-    ///NOT OK
-    // cacheWidth = constrainedHeight.renderSize(context);
-  } else if (thingImg.aspectRatio! > 1 && constrainedAspectRatio > 1) {
-    ///OK
-    cacheHeight = constrainedHeight.renderSize(context);
-
-    ///NOT OK
-    // cacheWidth = constrainedWidth.renderSize(context);
-    ///NOT OK
-    // cacheHeight = constrainedWidth.renderSize(context);
-    ///OK
-    // cacheWidth = constrainedHeight.renderSize(context);
-  } else if (thingImg.aspectRatio! < 1 && constrainedAspectRatio > 1) {
-    ///OK
-    cacheHeight = constrainedHeight.renderSize(context);
-
-    ///NOT OK
-    // cacheWidth = constrainedWidth.renderSize(context);
-    ///NOT OK
-    // cacheHeight = constrainedWidth.renderSize(context);
-    ///OK
-    // cacheWidth = constrainedHeight.renderSize(context);
-  } else {
-    print('ERROR');
-  }
-  // if (thingImg.aspectRatio! < 1 && constrainedAspectRatio > 1) {
-  //   ///NOT ok
-  //   cacheHeight = constrainedHeight.renderSize(context);
-  //   ///OK!!!
-  //   // cacheHeight = constrainedWidth.renderSize(context);
-  //   ///Ok too!!!
-  //   // cacheWidth = constrainedWidth.renderSize(context);
-  //   ///NOT ok
-  //   // cacheWidth = constrainedHeight.renderSize(context);
-  // } else {
-  //   cacheWidth = constrainedWidth.renderSize(context);
-  //   // cacheHeight = constrainedHeight.renderSize(context);
-  // }
-
-  print('''BuildImage$index:
-            Geometries: 
-            constrainedWidth: $constrainedWidth, 
-            constrainedHeight: $constrainedHeight,
-            chacheWidth: $cacheWidth, 
-            chacheHeight: $cacheHeight,
-            constrainedAspectRatio: $constrainedAspectRatio,
-            thingImage.aspectRatio: ${thingImg.aspectRatio}
-            ''');
-
-  return Image.file(
-    File(image),
-    width: constrainedWidth,
-    height: constrainedHeight,
-    fit: BoxFit.cover,
-    cacheWidth: cacheWidth,
-    cacheHeight: cacheHeight,
-  );
-}
-
 class ThingImg {
-  final XFile? image;
-  final double? aspectRatio;
+  final File? image;
 
-  ThingImg({this.image, this.aspectRatio});
+  ThingImg({
+    this.image,
+  });
 
   @override
   String toString() {
-    return '''ThingImg: image: ${image?.name}, aspectRatio: $aspectRatio''';
+    return '''ThingImg: image: ${image?.path},''';
   }
 }
 
