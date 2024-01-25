@@ -318,11 +318,11 @@ Image buildImage({
     ///NOT ok
     // cacheHeight = height.renderSize(context);
     ///OK!!!
-    cacheHeight = width.renderSize(context);
+    // cacheHeight = width.renderSize(context);
     ///Ok too!!!
     // cacheWidth = width.renderSize(context);
     ///NOT ok
-    // cacheWidth = height.renderSize(context);
+    cacheWidth = height.renderSize(context);
   } else {
     cacheWidth = width.renderSize(context);
     // cacheHeight = height.renderSize(context);
