@@ -12,6 +12,13 @@ import 'package:sbox1/ayay_to_slivers/for_valueNotifier_on_Set.dart';
 ///https://stackoverflow.com/questions/67597902/how-to-detect-if-an-image-is-vertical-or-horizontal
 /// https://dartpad-workshops-io2021.web.app/getting_started_with_slivers
 /// https://medium.com/make-android/save-your-memory-usage-by-optimizing-network-image-in-flutter-cbc9f8af47cd#:~:text=The%20method%20for%20resizing%20images,size%20specified%20in%20these%20properties.
+/// Steps to integrate CoverImage widget and test in ayayay
+/// 1) add debugInvertOversizedImages = true;
+/// 2) do not integrate imageState class. it only holds the file path or the
+/// network url to the image location
+/// 3) when showing the image i.e. ether file or network, make sure that there's
+/// no LauoutBuilder up in the tree it would be otherwise redundant
+/// 4)
 void main() {
   debugInvertOversizedImages = true;
   bootstrap();
@@ -257,29 +264,27 @@ class CoverImage extends StatelessWidget {
             constrainedAspectRatio: $constrainedAspectRatio,
             ''');
 
-        return imageFile != null
-            ? Image.file(
-                imageFile!,
-                fit: BoxFit.cover,
-                width: constrainedWidth,
-                height: constrainedHeight,
-                cacheWidth: cacheWidth,
-                cacheHeight: cacheHeight,
-              )
-            : imageNetwork != null
-                ? Image.network(
-                    imageNetwork!,
-                    fit: BoxFit.cover,
-                    width: constrainedWidth,
-                    height: constrainedHeight,
-                    cacheWidth: cacheWidth,
-                    cacheHeight: cacheHeight,
-                  )
-                : const Placeholder(
-                    color: Colors.white,
-                    child: Center(
-                        child: Text('neither Image.file nor Image.network')),
-                  );
+        if (imageFile != null) {
+          return Image.file(
+            imageFile!,
+            fit: BoxFit.cover,
+            width: constrainedWidth,
+            height: constrainedHeight,
+            cacheWidth: cacheWidth,
+            cacheHeight: cacheHeight,
+          );
+        } else if (imageNetwork != null) {
+          return Image.network(
+            imageNetwork!,
+            fit: BoxFit.cover,
+            width: constrainedWidth,
+            height: constrainedHeight,
+            cacheWidth: cacheWidth,
+            cacheHeight: cacheHeight,
+          );
+        } else {
+          throw Exception('neither Image.file nor Image.network');
+        }
       },
     );
   }
