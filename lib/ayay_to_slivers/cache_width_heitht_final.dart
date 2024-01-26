@@ -49,7 +49,7 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                       alignment: Alignment.center,
                       children: [
                         if (imagesState.isNotEmpty)
-                          CoveredImage(
+                          CoverImage.file(
                             thingImg: imagesState.elementAt(0),
                           )
                         else
@@ -61,7 +61,7 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                             final xFile = await ImagePicker()
                                 .pickImage(source: ImageSource.gallery);
                             final file = File(xFile!.path);
-                            final thingImage = ThingImg(image: file);
+                            final thingImage = ThingImg(imageFile: file);
                             final imagesState = goGet<ImagesState>();
                             imagesState.addOrReplaceAt(0, thingImage);
                             print(
@@ -85,7 +85,7 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                       alignment: Alignment.center,
                       children: [
                         if (imagesState.isNotEmpty && imagesState.length > 1)
-                          CoveredImage(
+                          CoverImage.file(
                             thingImg: imagesState.elementAt(1),
                           )
                         else
@@ -98,7 +98,7 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                               final xFile = await ImagePicker()
                                   .pickImage(source: ImageSource.gallery);
                               final file = File(xFile!.path);
-                              final thingImage = ThingImg(image: file);
+                              final thingImage = ThingImg(imageFile: file);
                               final imagesState = goGet<ImagesState>();
                               imagesState.addOrReplaceAt(1, thingImage);
                               print(
@@ -122,9 +122,12 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                 alignment: Alignment.center,
                 children: [
                   if (imagesState.isNotEmpty && imagesState.length > 2)
-                    CoveredImage(
+                    CoverImage.file(
                       thingImg: imagesState.elementAt(2),
                     )
+                  // CoverImage.network(
+                  //   thingImg: imagesState.elementAt(2),
+                  // )
                   else
                     const Placeholder(
                       color: Colors.blue,
@@ -135,17 +138,23 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                         final xFile = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
                         final file = File(xFile!.path);
-                        final thingImage = ThingImg(image: file);
+                        final thingImage = ThingImg(imageFile: file);
                         final imagesState = goGet<ImagesState>();
                         imagesState.addOrReplaceAt(2, thingImage);
                         print(
-                          '''decodedImage: 
+                          '''decodedImage:
                                     name: ${xFile.name},
                                     mimeType: ${xFile.mimeType},
                                     index: 2, ''',
                         );
                         print(imagesState.value.elementAt(1));
                       },
+                      // onPressed: () => goGet<ImagesState>().addOrReplaceAt(
+                      //   2,
+                      //   ThingImg(
+                      //       imageUrl:
+                      //           'https://dartpad-workshops-io2021.web.app/getting_started_with_slivers/assets/header.jpeg'),
+                      // ),
                       child: const Text('new img'),
                     ),
                 ],
@@ -156,9 +165,12 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                 alignment: Alignment.center,
                 children: [
                   if (imagesState.isNotEmpty && imagesState.length > 3)
-                    CoveredImage(
+                    CoverImage.file(
                       thingImg: imagesState.elementAt(3),
                     )
+                  // CoverImage.network(
+                  //   thingImg: imagesState.elementAt(3),
+                  // )
                   else
                     const Placeholder(
                       color: Colors.green,
@@ -169,17 +181,24 @@ class Ayay1 extends StatelessWidget with GetItMixin {
                         final xFile = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
                         final file = File(xFile!.path);
-                        final thingImage = ThingImg(image: file);
+                        final thingImage = ThingImg(imageFile: file);
                         final imagesState = goGet<ImagesState>();
                         imagesState.addOrReplaceAt(3, thingImage);
                         print(
-                          '''decodedImage: 
+                          '''decodedImage:
                                     name: ${xFile.name},
                                     mimeType: ${xFile.mimeType},
                                     index: 3, ''',
                         );
                         print(imagesState.value.elementAt(1));
                       },
+                      // onPressed: () => goGet<ImagesState>().addOrReplaceAt(
+                      //   3,
+                      //   ThingImg(
+                      //       imageUrl:
+                      //       'https://plus.unsplash.com/premium_photo-1680740103993-21639956f3f0?q=80&w=1588&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                      //   ),
+                      // ),
                       child: const Text('new img'),
                     ),
                 ],
@@ -192,14 +211,23 @@ class Ayay1 extends StatelessWidget with GetItMixin {
   }
 }
 
-///The size of the image displayed on the screen is determined by
+/// The size of the image displayed on the screen is determined by
 /// the ‘width’ and ‘height’ properties, but the size of the rendered
-/// image is determined by ‘cacheWidth’ which is he width the image should decode to and cache.
-/// and ‘cacheHeight’ which is the height the image should decode to and cache..
-class CoveredImage extends StatelessWidget {
-  const CoveredImage({super.key, required this.thingImg});
+/// image is determined by the ‘cacheWidth’ which is the width the image
+/// should decode to and cache and, the ‘cacheHeight’ which is the height
+/// the image should decode to and cache.
+class CoverImage extends StatelessWidget {
+  CoverImage.file({super.key, required this.thingImg})
+      : imageFile = File(thingImg.imageFile!.path),
+        imageNetwork = null;
+
+  CoverImage.network({super.key, required this.thingImg})
+      : imageNetwork = thingImg.imageUrl,
+        imageFile = null;
 
   final ThingImg thingImg;
+  final File? imageFile;
+  final String? imageNetwork;
 
   @override
   Widget build(BuildContext context) {
@@ -208,12 +236,7 @@ class CoveredImage extends StatelessWidget {
         final constrainedWidth = constraints.maxWidth;
         final constrainedHeight = constraints.maxHeight;
         final constrainedAspectRatio = constrainedWidth / constrainedHeight;
-        final imageFile = File(thingImg.image!.path);
-        // The width the image should decode to and cache.
-        // At least one of this and [height] must be non-null.
         int? cacheWidth;
-        // The height the image should decode to and cache.
-        // At least one of this and [width] must be non-null.
         int? cacheHeight;
 
         if (constrainedAspectRatio < 1) {
@@ -225,7 +248,7 @@ class CoveredImage extends StatelessWidget {
           cacheHeight = constrainedHeight.renderSize(context);
         }
 
-        print('''CoveredImage:
+        print('''CoverImage:
             Geometries: 
             constrainedWidth: $constrainedWidth, 
             constrainedHeight: $constrainedHeight,
@@ -234,29 +257,46 @@ class CoveredImage extends StatelessWidget {
             constrainedAspectRatio: $constrainedAspectRatio,
             ''');
 
-        return Image.file(
-          imageFile,
-          fit: BoxFit.cover,
-          width: constrainedWidth,
-          height: constrainedHeight,
-          cacheWidth: cacheWidth,
-          cacheHeight: cacheHeight,
-        );
+        return imageFile != null
+            ? Image.file(
+                imageFile!,
+                fit: BoxFit.cover,
+                width: constrainedWidth,
+                height: constrainedHeight,
+                cacheWidth: cacheWidth,
+                cacheHeight: cacheHeight,
+              )
+            : imageNetwork != null
+                ? Image.network(
+                    imageNetwork!,
+                    fit: BoxFit.cover,
+                    width: constrainedWidth,
+                    height: constrainedHeight,
+                    cacheWidth: cacheWidth,
+                    cacheHeight: cacheHeight,
+                  )
+                : const Placeholder(
+                    color: Colors.white,
+                    child: Center(
+                        child: Text('neither Image.file nor Image.network')),
+                  );
       },
     );
   }
 }
 
 class ThingImg {
-  final File? image;
+  final File? imageFile;
+  final String? imageUrl;
 
   ThingImg({
-    this.image,
+    this.imageFile,
+    this.imageUrl,
   });
 
   @override
   String toString() {
-    return '''ThingImg: image: ${image?.path},''';
+    return '''ThingImg: image: ${imageFile?.path},''';
   }
 }
 
