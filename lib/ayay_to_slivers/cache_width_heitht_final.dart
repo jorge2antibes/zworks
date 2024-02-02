@@ -226,15 +226,23 @@ class Ayay1 extends StatelessWidget with GetItMixin {
 class CoverImage extends StatelessWidget {
   CoverImage.file({super.key, required this.thingImg})
       : imageFile = File(thingImg.imageFile!.path),
-        imageNetwork = null;
+        imageNetwork = null,
+        imageAsset = null;
 
   CoverImage.network({super.key, required this.thingImg})
       : imageNetwork = thingImg.imageUrl,
+        imageFile = null,
+        imageAsset = null;
+
+  CoverImage.asset({super.key, required this.thingImg})
+      : imageAsset = thingImg.imageAsset,
+        imageNetwork = null,
         imageFile = null;
 
   final ThingImg thingImg;
   final File? imageFile;
   final String? imageNetwork;
+  final String? imageAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -282,6 +290,15 @@ class CoverImage extends StatelessWidget {
             cacheWidth: cacheWidth,
             cacheHeight: cacheHeight,
           );
+        } else if (imageAsset != null) {
+          return Image.asset(
+            imageNetwork!,
+            fit: BoxFit.cover,
+            width: constrainedWidth,
+            height: constrainedHeight,
+            cacheWidth: cacheWidth,
+            cacheHeight: cacheHeight,
+          );
         } else {
           throw Exception('neither Image.file nor Image.network');
         }
@@ -293,10 +310,12 @@ class CoverImage extends StatelessWidget {
 class ThingImg {
   final File? imageFile;
   final String? imageUrl;
+  final String? imageAsset;
 
   ThingImg({
     this.imageFile,
     this.imageUrl,
+    this.imageAsset,
   });
 
   @override
