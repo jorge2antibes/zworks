@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sbox1/ayay_to_slivers/extensions.dart';
-import 'package:sbox1/ayay_to_slivers/for_valueNotifier_on_Set.dart';
+import 'package:sbox1/sinusoidals/package/flutter_sinusoidals.dart';
 
 ///https://stackoverflow.com/questions/67597902/how-to-detect-if-an-image-is-vertical-or-horizontal
 /// https://dartpad-workshops-io2021.web.app/getting_started_with_slivers
@@ -18,27 +17,53 @@ void main() {
   runApp(const Ayay1());
 }
 
-class Ayay1 extends StatelessWidget {
+class Ayay1 extends StatefulWidget {
   const Ayay1({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<Ayay1> createState() => _Ayay1State();
+}
+
+class _Ayay1State extends State<Ayay1> {
+  late final MediaQueryData mediaQueryData;
+
+  @override
+  void initState() {
+    super.initState();
+    mediaQueryData = MediaQueryData.fromView(
+        WidgetsFlutterBinding.ensureInitialized()
+            .platformDispatcher
+            .views
+            .single);
+    print('''MediaQueryData:
+    width: ${mediaQueryData.size.width}, 
+    height: ${mediaQueryData.size.height}, 
+    dpr: ${mediaQueryData.devicePixelRatio}, 
+    displayFeatures: ${mediaQueryData.displayFeatures},
+    ''');
+  }
+
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = mediaQueryData.size;
     final windowWidth = screenSize.width;
     final windowHeight = screenSize.height;
     final windowAspectRatio = windowWidth / windowHeight;
-    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final devicePixelRatioFromPlatform = MediaQueryData.fromView(
-            WidgetsBinding.instance.platformDispatcher.views.single)
-        .devicePixelRatio;
-    final barHeight = screenSize.height * .30;
+    final devicePixelRatio = mediaQueryData.devicePixelRatio;
+
+    final expandedHeight = screenSize.height * .30;
+    final toolbarHeight = screenSize.height * .16;
+    final collapsedHeight = 250.0;
+
     print('''metrics: 
     windowWidth: $windowWidth,
     windowHeight: $windowHeight,
     windowAspectRatio: $windowAspectRatio,
-    devicePixelRatio from context: $devicePixelRatio
-    devicPixelRatio from Platform: $devicePixelRatioFromPlatform''');
+    devicePixelRatio from context: $devicePixelRatio,
+    expandedHeight: ${expandedHeight},
+    toolbarHeight: ${toolbarHeight},
+    collapsedHeight: ${collapsedHeight},
+    ''');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
@@ -48,14 +73,20 @@ class Ayay1 extends StatelessWidget {
         body: Stack(
           alignment: Alignment.center,
           children: [
+            Container(
+              color: Colors.blue.withOpacity(.1),
+            ),
             CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverAppBar(
-                  pinned: true,
-                  expandedHeight: barHeight,
-                  toolbarHeight: 200,
+                  pinned: false,
+                  floating: true,
+                  collapsedHeight: collapsedHeight,
+                  expandedHeight: expandedHeight,
+                  toolbarHeight: toolbarHeight,
                   leadingWidth: 600,
+                  backgroundColor: Colors.blue.withOpacity(.2),
                   leading: Padding(
                     padding: const EdgeInsets.only(left: 40, top: 30),
                     child: Text(
@@ -64,66 +95,81 @@ class Ayay1 extends StatelessWidget {
                           fontSize: 30, color: Colors.white54),
                     ),
                   ),
-                  backgroundColor: Colors.blue.withOpacity(.2),
                   // title: Text('sine test\\'),
-                  actions: const [
-                    Text('data'),
-                  ],
-                  bottom: PreferredSize(
-                    // important: height must be zero so the parallax effect can take place
-                    preferredSize: Size(windowWidth, 0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 450, bottom: 10),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            width: 200,
-                            child: const Text(
-                              'Experience',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Container(
-                            width: 200,
-                            child: const Text(
-                              'Languages/frameworks',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Container(
-                            width: 200,
-                            child: const Text(
-                              'Education',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // actions: [
+                  //   Padding(
+                  //     padding: const EdgeInsets.only(
+                  //       top: 120,
+                  //       right: 100,
+                  //       // bottom: 60,
+                  //     ),
+                  //     child: Text(
+                  //       'JC',
+                  //       style: GoogleFonts.abel(fontSize: 60),
+                  //     ),
+                  //   ),
+                  // ],
+                  // bottom: PreferredSize(
+                  //   // important: height must be zero so the parallax effect can take place
+                  //   preferredSize: Size(windowWidth, 0),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(left: 450, bottom: 10),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.max,
+                  //       children: [
+                  //         Container(
+                  //           width: 200,
+                  //           child: const Text(
+                  //             'Experience',
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //         ),
+                  //         Container(
+                  //           width: 200,
+                  //           child: const Text(
+                  //             'Languages/frameworks',
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //         ),
+                  //         Container(
+                  //           width: 200,
+                  //           child: const Text(
+                  //             'Education',
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // bottom: PreferredSize(
+                  //   preferredSize: Size(windowWidth, 0),
+                  //   child: Sinusoidal(
+                  //     reverse: true,
+                  //     child: Container(
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.purple,
+                  //         border: Border(bottom: BorderSide(color: Colors.white, width: 2))
+                  //       ),
+                  //       // color: Colors.purple,
+                  //       height: 30,
+                  //     ),
+                  //   ),
+                  // ),
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
-                    title: Padding(
-                      padding: const EdgeInsets.only(bottom: 40),
-                      child: Text(
-                        'Jorge Carbonell',
-                        style: GoogleFonts.abel(),
-                      ),
-                    ),
                     stretchModes: [StretchMode.blurBackground],
                     expandedTitleScale: 2,
                     collapseMode: CollapseMode.parallax,
-                    background: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 60,
-                        bottom: 60,
-                        left: 1100,
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          print(
-                            '''contrains AppBar:
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              print(
+                                '''contrains AppBar: CircleAvatar():
                             hasBoundedWidth: ${constraints.hasBoundedWidth},
                             hasBoundedHeight:${constraints.hasBoundedHeight},
                             hasInfiniteWidth: ${constraints.hasInfiniteWidth},
@@ -139,23 +185,160 @@ class Ayay1 extends StatelessWidget {
                             isNormalized: ${constraints.isNormalized},
                             isTight: ${constraints.isTight},
                             isSatisfiedBy:${constraints.isSatisfiedBy(const Size(0, 0))}''',
-                          );
-                          return CircleAvatar(
-                            backgroundImage: Image.asset(
-                              'assets/images/20240131_103828.jpg',
-                              // fit: BoxFit.fill,
-                              cacheWidth: 400,
-                              // cacheHeight: 202,
-                            ).image,
-                          );
-                        },
+                              );
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  // color: Colors.red,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 100),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Center(
+                                          child: CircleAvatar(
+                                            radius: constraints.maxWidth * .05,
+                                            backgroundImage: Image.asset(
+                                              'assets/images/20240131_103828.jpg',
+                                              // fit: BoxFit.fill,
+                                              cacheWidth: 400,
+                                              // cacheHeight: 202,
+                                            ).image,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Container(
+                                              // color: Colors.blue,
+                                              width: 80,
+                                              height: 20,
+                                              child: const Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'Experience',
+                                                  textAlign: TextAlign.left,
+                                                  style:
+                                                      TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            Container(
+                                              // color: Colors.yellow,
+                                              width: 80,
+                                              height: 20,
+                                              child: const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 8),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    'Languages',
+                                                    textAlign: TextAlign.left,
+                                                    style:
+                                                        TextStyle(fontSize: 10),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            Container(
+                                              // color: Colors.blue,
+                                              width: 80,
+                                              height: 20,
+                                              child: const Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'Experience',
+                                                  textAlign: TextAlign.left,
+                                                  style:
+                                                      TextStyle(fontSize: 10),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 0),
+                            child: Text(
+                              'Jorge Carbonell',
+                              style: GoogleFonts.abel(fontSize: 30),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    // background: Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     top: 60,
+                    //     bottom: 60,
+                    //     left: 1100,
+                    //   ),
+                    //   child: LayoutBuilder(
+                    //     builder: (context, constraints) {
+                    //       print(
+                    //         '''contrains AppBar:
+                    //         hasBoundedWidth: ${constraints.hasBoundedWidth},
+                    //         hasBoundedHeight:${constraints.hasBoundedHeight},
+                    //         hasInfiniteWidth: ${constraints.hasInfiniteWidth},
+                    //         hasInfiniteHeight: ${constraints.hasInfiniteHeight},
+                    //         hasTightWidth: ${constraints.hasTightWidth},
+                    //         hasTightHeight: ${constraints.hasTightHeight},
+                    //         smallest: ${constraints.smallest},
+                    //         biggest: ${constraints.biggest},
+                    //         minWidth: ${constraints.minWidth},
+                    //         maxWidth: ${constraints.maxWidth},
+                    //         minHeight: ${constraints.minHeight},
+                    //         maxHeight: ${constraints.maxHeight},
+                    //         isNormalized: ${constraints.isNormalized},
+                    //         isTight: ${constraints.isTight},
+                    //         isSatisfiedBy:${constraints.isSatisfiedBy(const Size(0, 0))}''',
+                    //       );
+                    //       return CircleAvatar(
+                    //         backgroundImage: Image.asset(
+                    //           'assets/images/20240131_103828.jpg',
+                    //           // fit: BoxFit.fill,
+                    //           cacheWidth: 400,
+                    //           // cacheHeight: 202,
+                    //         ).image,
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ),
                 ),
-                SliverFixedExtentList(
+                SliverList(
                   delegate: SliverChildListDelegate(
                     [
+                      Sinusoidal(
+                        reverse: true,
+                        model: const SinusoidalModel(
+                          formular: WaveFormular.travelling,
+                          amplitude: 12, frequency: .5,
+                          waves: 0.5,
+                        ),
+                        child: Center(
+                          child: Container(
+                            color: Colors.blue.withOpacity(.2),
+                            height: 25,
+                          ),
+                        ),
+                      ),
                       LayoutBuilder(
                         builder: (context, constraints) {
                           print(
@@ -177,7 +360,7 @@ class Ayay1 extends StatelessWidget {
                             isSatisfiedBy:${constraints.isSatisfiedBy(const Size(0, 0))}''',
                           );
                           return Image.asset(
-                            'assets/images/12.png',
+                            'assets/images/13_1.png',
                             fit: BoxFit.fitHeight,
                             cacheWidth: 1400,
                             // cacheHeight: (5200).round(),
@@ -186,7 +369,7 @@ class Ayay1 extends StatelessWidget {
                       )
                     ],
                   ),
-                  itemExtent: 5200,
+                  // itemExtent: 5200,
                 ),
               ],
             ),
