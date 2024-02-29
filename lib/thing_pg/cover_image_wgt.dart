@@ -9,21 +9,25 @@ import 'package:flutter/material.dart';
 /// should decode to and cache and, the ‘cacheHeight’ which is the height
 /// the image should decode to and cache.
 class CoverImageWgt extends StatelessWidget {
-  CoverImageWgt.file({super.key, required this.imageFile})
+  const CoverImageWgt.file(
+      {super.key, required this.imageFile, this.gestureTabCallback})
       : imageNetwork = null,
         imageAsset = null;
 
-  CoverImageWgt.network({super.key, required this.imageNetwork})
+  const CoverImageWgt.network(
+      {super.key, required this.imageNetwork, this.gestureTabCallback})
       : imageFile = null,
         imageAsset = null;
 
-  CoverImageWgt.asset({super.key, required this.imageAsset})
+  const CoverImageWgt.asset(
+      {super.key, required this.imageAsset, this.gestureTabCallback})
       : imageNetwork = null,
         imageFile = null;
 
   final File? imageFile;
   final String? imageNetwork;
   final String? imageAsset;
+  final GestureTapCallback? gestureTabCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -72,34 +76,44 @@ class CoverImageWgt extends StatelessWidget {
             ''');
 
         if (imageFile != null) {
-          return Image.file(
-            imageFile!,
-            fit: BoxFit.cover,
-            width: constrainedWidth,
-            height: constrainedHeight,
-            cacheWidth: cacheWidth,
-            cacheHeight: cacheHeight,
+          return InkWell(
+            onTap: gestureTabCallback,
+            child: Image.file(
+              imageFile!,
+              fit: BoxFit.cover,
+              width: constrainedWidth,
+              height: constrainedHeight,
+              cacheWidth: cacheWidth,
+              cacheHeight: cacheHeight,
+            ),
           );
         } else if (imageNetwork != null) {
-          return Image.network(
-            imageNetwork!,
-            fit: BoxFit.cover,
-            width: constrainedWidth,
-            height: constrainedHeight,
-            cacheWidth: cacheWidth,
-            cacheHeight: cacheHeight,
+          return InkWell(
+            onTap: gestureTabCallback,
+            child: Image.network(
+              imageNetwork!,
+              fit: BoxFit.cover,
+              width: constrainedWidth,
+              height: constrainedHeight,
+              cacheWidth: cacheWidth,
+              cacheHeight: cacheHeight,
+            ),
           );
         } else if (imageAsset != null) {
-          return Image.asset(
-            imageAsset!,
-            fit: BoxFit.cover,
-            width: constrainedWidth,
-            height: constrainedHeight,
-            cacheWidth: cacheWidth,
-            cacheHeight: cacheHeight,
+          return InkWell(
+            onTap: gestureTabCallback,
+            child: Image.asset(
+              imageAsset!,
+              fit: BoxFit.cover,
+              width: constrainedWidth,
+              height: constrainedHeight,
+              cacheWidth: cacheWidth,
+              cacheHeight: cacheHeight,
+            ),
           );
         } else {
-          throw Exception('CoverImageWgt: neither Image.file nor Image.network nor Image.asset');
+          throw Exception(
+              'CoverImageWgt: neither Image.file nor Image.network nor Image.asset');
         }
       },
     );

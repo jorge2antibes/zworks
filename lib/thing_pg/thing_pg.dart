@@ -1,9 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
@@ -19,8 +15,8 @@ class ThingPg extends StatelessWidget with GetItMixin {
     final imgAsset = 'assets/photos/5.jpg';
     final screenSize = MediaQuery.of(context).size;
     final cmdsWidth = screenSize.width * .20;
-    final cmdsHeight = cmdsWidth * 5;
-    final cmdWidthHeight = screenSize.width * .12;
+    final cmdsHeight = cmdsWidth * 7;
+    final cmdWidthHeight = screenSize.width * .10;
     final infoHeigh = screenSize.height * .25;
 
     debugPrint(
@@ -97,6 +93,24 @@ class ThingPg extends StatelessWidget with GetItMixin {
                       height: cmdWidthHeight,
                       child: SvgPicture.asset(
                         'assets/svgs/camera.svg',
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      width: cmdWidthHeight,
+                      height: cmdWidthHeight,
+                      child: SvgPicture.asset(
+                        'assets/svgs/messages.svg',
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      width: cmdWidthHeight,
+                      height: cmdWidthHeight,
+                      child: SvgPicture.asset(
+                        'assets/svgs/edit.svg',
                       ),
                     ),
                   ),
