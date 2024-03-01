@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:sbox1/thing_pg/stacked_imgs_view.dart';
+import 'package:sbox1/thing_pg/thing_cmds_view.dart';
 
 import 'cover_image_wgt.dart';
 
@@ -25,97 +26,18 @@ class ThingPg extends StatelessWidget with GetItMixin {
     return Scaffold(
       body: Stack(
         children: [
-          Opacity(
-            opacity: .2,
-            child: CoverImageWgt.asset(
-              imageAsset: imgAsset,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              right: cmdsWidth,
-              bottom: infoHeigh,
-            ),
-            child: CoverImageWgt.asset(
-              imageAsset: imgAsset,
-            ),
+          StackedImgsView(
+            imgAsset: imgAsset,
+            cmdsWidth: cmdsWidth,
+            infoHeigh: infoHeigh,
           ),
           Positioned(
             width: cmdsWidth - (cmdsWidth * .35),
             right: cmdsWidth * .16,
             bottom: 250,
-            child: Container(
-              width: 50,
-              height: cmdsHeight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/envelope_closed.svg',
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/envelope_opened.svg',
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/envelope_with_mail.svg',
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/gallery.svg',
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/camera.svg',
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/messages.svg',
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: cmdWidthHeight,
-                      height: cmdWidthHeight,
-                      child: SvgPicture.asset(
-                        'assets/svgs/edit.svg',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            child: ThingCmdsView(
+              cmdsHeight: cmdsHeight,
+              cmdWidthHeight: cmdWidthHeight,
             ),
           ),
         ],
