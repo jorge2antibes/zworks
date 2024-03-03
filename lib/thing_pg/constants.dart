@@ -40,3 +40,5 @@ const keywords_matcher =
     r'^([a-zA-Z]{1,13}|[a-zA-Z]{1,13}\s|[a-zA-Z]{1,13}\s[a-zA-Z]{1,13}|[a-zA-Z]{1,13}\s[a-zA-Z]{1,13}\s)$';
 
 const Color fields_color = Color(0xAA000000);
+
+const maxImgsItemCount = 10;

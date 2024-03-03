@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sbox1/thing_pg/thing_pg.dart';
+import 'package:sbox1/thing_pg/thing_pg0.dart';
+import 'package:sbox1/thing_pg/thing_pg1.dart';
 
 void main() {
 
@@ -14,7 +15,8 @@ class ThingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: ThingPg(),
+      // home: ThingPg0(),
+      home: ThingPg1(),
     );
   }
 }

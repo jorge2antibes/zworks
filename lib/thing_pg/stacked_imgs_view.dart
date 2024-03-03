@@ -4,17 +4,20 @@ import 'package:sbox1/thing_pg/cover_image_wgt.dart';
 class StackedImgsView extends StatelessWidget {
   const StackedImgsView({
     super.key,
+    required this.index,
     required this.imgAsset,
-    required this.cmdsWidth,
-    required this.infoHeigh,
+    required this.rightPadding,
+    required this.bottomPadding,
   });
 
+  final int index;
   final String imgAsset;
-  final double cmdsWidth;
-  final double infoHeigh;
+  final double rightPadding;
+  final double bottomPadding;
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('StackedImgsViews: build(): index: $index, cmdsWidth: $rightPadding, infoHeight: $bottomPadding');
     return Stack(
       children: [
         Opacity(
@@ -25,8 +28,8 @@ class StackedImgsView extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(
-            right: cmdsWidth,
-            bottom: infoHeigh,
+            right: rightPadding,
+            bottom: bottomPadding,
           ),
           child: CoverImageWgt.asset(
             imageAsset: imgAsset,

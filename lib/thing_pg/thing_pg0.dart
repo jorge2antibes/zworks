@@ -1,20 +1,23 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:sbox1/thing_pg/constants.dart';
 import 'package:sbox1/thing_pg/stacked_imgs_view.dart';
 import 'package:sbox1/thing_pg/thing_cmds_view.dart';
 
 import 'cover_image_wgt.dart';
 
-class ThingPg extends StatelessWidget with GetItMixin {
-  ThingPg({super.key});
+class ThingPg0 extends StatelessWidget with GetItMixin {
+  ThingPg0({super.key});
 
   @override
   Widget build(BuildContext context) {
     // debugInvertOversizedImages = true;
     final imgAsset = 'assets/photos/5.jpg';
     final screenSize = MediaQuery.of(context).size;
+    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     final cmdsWidth = screenSize.width * .20;
     final cmdsHeight = cmdsWidth * 7;
     final cmdWidthHeight = screenSize.width * .10;
@@ -26,10 +29,21 @@ class ThingPg extends StatelessWidget with GetItMixin {
     return Scaffold(
       body: Stack(
         children: [
-          StackedImgsView(
-            imgAsset: imgAsset,
-            cmdsWidth: cmdsWidth,
-            infoHeigh: infoHeigh,
+          ListView.builder(
+            scrollDirection: Axis.horizontal,
+            cacheExtent: screenSize.width * devicePixelRatio,
+            // physics: const FixedExtentScrollPhysics(),
+            // controller: FixedExtentScrollController(),
+            itemCount: maxImgsItemCount,
+            itemExtent: screenSize.width,
+            itemBuilder: (context, index) {
+              return StackedImgsView(
+                index: index,
+                imgAsset: imgAsset,
+                rightPadding: cmdsWidth,
+                bottomPadding: infoHeigh,
+              );
+            },
           ),
           Positioned(
             width: cmdsWidth - (cmdsWidth * .35),
