@@ -24,7 +24,7 @@ class ThingPg0 extends StatelessWidget with GetItMixin {
     final infoHeigh = screenSize.height * .25;
 
     debugPrint(
-        'ThingPg: screenSize. width: ${screenSize.width}, cmdsWidth: $cmdsWidth, cmdWidthHeight: $cmdWidthHeight');
+        'ThingPg0: screenSize. width: ${screenSize.width}, cmdsWidth: $cmdsWidth, cmdWidthHeight: $cmdWidthHeight');
 
     return Scaffold(
       body: Stack(

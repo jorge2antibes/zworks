@@ -6,11 +6,14 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:sbox1/thing_pg/constants.dart';
 import 'package:sbox1/thing_pg/stacked_imgs_view.dart';
 import 'package:sbox1/thing_pg/thing_cmds_view.dart';
+import 'package:sbox1/thing_pg/thing_pgs.dart';
 
 import 'cover_image_wgt.dart';
 
-class ThingPg1 extends StatelessWidget with GetItMixin {
-  ThingPg1({super.key});
+
+///SliverAppBar with SliverFillViewPort
+class ThingPg3 extends StatelessWidget with GetItMixin {
+  ThingPg3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +27,31 @@ class ThingPg1 extends StatelessWidget with GetItMixin {
     final infoHeigh = screenSize.height * .25;
 
     debugPrint(
-        'ThingPg1: screenSize. width: ${screenSize.width}, cmdsWidth: $cmdsWidth, cmdWidthHeight: $cmdWidthHeight');
+        'ThingP3: screenSize. width: ${screenSize.width}, cmdsWidth: $cmdsWidth, cmdWidthHeight: $cmdWidthHeight');
 
     return Scaffold(
-      body: Stack(
-        children: [
-          PageView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: maxImgsItemCount,
-            itemBuilder: (context, index) {
-              return StackedImgsView(
-                index: index,
-                imgAsset: imgAsset,
-                rightPadding: cmdsWidth,
-                bottomPadding: infoHeigh,
-              );
-            },
-          ),
-          Positioned(
-            width: cmdsWidth - (cmdsWidth * .35),
-            right: cmdsWidth * .16,
-            bottom: 250,
-            child: ThingCmdsView(
+      body: CustomScrollView(
+        physics: const PageScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            collapsedHeight: 100,
+            primary: false,
+            expandedHeight: screenSize.height,
+            flexibleSpace: ThingImgsPgs(
+              imgAsset: imgAsset,
+              cmdsWidth: cmdsWidth,
+              infoHeigh: infoHeigh,
               cmdsHeight: cmdsHeight,
               cmdWidthHeight: cmdWidthHeight,
+            ),
+          ),
+          SliverFillViewport(
+            viewportFraction: 1.0,
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Placeholder();
+              },
+              childCount: 2,
             ),
           ),
         ],
