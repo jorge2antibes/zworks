@@ -4,8 +4,8 @@ import 'package:sbox1/thing_pg/thing_cmds_view.dart';
 
 import 'constants.dart';
 
-class ThingImgsPgs extends StatelessWidget {
-  const ThingImgsPgs({
+class ThingImgsCmdsPgs extends StatelessWidget {
+  const ThingImgsCmdsPgs({
     super.key,
     required this.imgAsset,
     required this.cmdsWidth,
