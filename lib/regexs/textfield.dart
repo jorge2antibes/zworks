@@ -66,6 +66,9 @@ class NumberInput extends StatelessWidget {
                 .replaceAll(r'^[€$]', '')
                 .trim()
                 .replaceAll('00.', '0.')
+
+
+
                 .replaceAll(r'[\.]{2,}', '.')
                 .replaceFirstMapped(
               r'^0{1,}',

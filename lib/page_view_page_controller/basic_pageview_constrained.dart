@@ -52,7 +52,7 @@ class _MyPageViewState extends State<MyPageView> {
     return MaterialApp(
       home: Scaffold(
         body: PageView(
-          scrollDirection: Axis.vertical,
+          scrollDirection: Axis.horizontal,
           controller: _pageController,
           children: <Widget>[
             ColoredBox(
