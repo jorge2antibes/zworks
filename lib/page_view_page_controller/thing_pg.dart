@@ -1,16 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sbox1/mainori.dart';
+import 'package:sbox1/stack_reordering/stack_reorder.dart';
 
-/// This widget introduces a [MaterialApp], [Scaffold] and [PageView] with two pages
-/// using the default constructor. Both pages contain an [ElevatedButton] allowing you
-/// to animate the [PageView] using a [PageController].
-/// I have also added another PageView (which is a copy of the first one) with
-/// Horizontal scrolling. This seems to work at the level of button actions, however,
-/// when I'm in the second element of the second PageView i.e. at previous button, a
-/// scrolling up takes me to the previous button of the first page Not to the next
-/// button of the second page as it should
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,19 +12,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final images = <ImageView>[
+      const ImageView(color: Colors.red),
+      const ImageView(color: Colors.black),
+      const ImageView(color: Colors.blue),
+    ];
     return MaterialApp(
       title: 'basic PageController',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyPageView(),
+      home: MyPageView(images: images),
     );
   }
 }
 
 class MyPageView extends StatefulWidget {
-  const MyPageView({super.key});
+  const MyPageView({super.key, required this.images});
+
+  final List<ImageView> images;
 
   @override
   State<MyPageView> createState() => _MyPageViewState();
@@ -51,87 +52,57 @@ class _MyPageViewState extends State<MyPageView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: PageView(
-          scrollDirection: Axis.horizontal,
-          controller: _pageController,
-          children: <Widget>[
-            ColoredBox(
-              color: Colors.red,
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_pageController.hasClients) {
-                      _pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: const Text('Next'),
-                ),
+        body: Stack(
+          children: [
+            /// I could also use the builder constructor for more heavy build of widgets list
+            PageView(
+              scrollDirection: Axis.horizontal,
+              controller: _pageController,
+              children: widget.images,
+            ),
+            const Center(
+              child: Text('SOMTETEXT'),
+            ),
+            Positioned(
+              right: 20,
+              top: 100,
+              width: 70,
+              height: 200,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () {
+                        if (_pageController.hasClients) {
+                          _pageController.animateToPage(
+                            2,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.bounceInOut,
+                          );
+                        }
+                      },
+                      child: const Placeholder(
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            ColoredBox(
-              color: Colors.blue,
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_pageController.hasClients) {
-                      _pageController.animateToPage(
-                        0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: const Text('Previous'),
-                ),
-              ),
-            ),
-            // PageView(
-            //   scrollDirection: Axis.horizontal,
-            //   controller: _pageController1,
-            //   children: <Widget>[
-            //     ColoredBox(
-            //       color: Colors.red,
-            //       child: Center(
-            //         child: ElevatedButton(
-            //           onPressed: () {
-            //             if (_pageController1.hasClients) {
-            //               _pageController1.animateToPage(
-            //                 1,
-            //                 duration: const Duration(milliseconds: 200),
-            //                 curve: Curves.easeInOut,
-            //               );
-            //             }
-            //           },
-            //           child: const Text('Next horizontal'),
-            //         ),
-            //       ),
-            //     ),
-            //     ColoredBox(
-            //       color: Colors.blue,
-            //       child: Center(
-            //         child: ElevatedButton(
-            //           onPressed: () {
-            //             if (_pageController1.hasClients) {
-            //               _pageController1.animateToPage(
-            //                 0,
-            //                 duration: const Duration(milliseconds: 200),
-            //                 curve: Curves.easeInOut,
-            //               );
-            //             }
-            //           },
-            //           child: const Text('Previous'),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),
     );
+  }
+}
+
+class ImageView extends StatelessWidget {
+  const ImageView({super.key, required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Placeholder(color: color);
   }
 }

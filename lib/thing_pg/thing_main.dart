@@ -6,7 +6,6 @@ import 'package:sbox1/thing_pg/thing_pg3.dart';
 
 void main() {
 
-
   runApp(ThingApp());
 }
 
