@@ -41,7 +41,7 @@ class CoverImageWgt extends StatelessWidget {
         int? cacheWidth;
         int? cacheHeight;
 
-        debugPrint('''CoverImageWgt:
+        print('''CoverImageWgt:
             Constrains:
             minWidth: ${constraints.minWidth}, 
             maxWidth: ${constraints.maxWidth},
@@ -66,7 +66,7 @@ class CoverImageWgt extends StatelessWidget {
           cacheHeight = constrainedHeight.renderSize(context);
         }
 
-        debugPrint('''CoverImageWgt:
+        print('''CoverImageWgt:
             Geometries: 
             constrainedWidth: $constrainedWidth, 
             constrainedHeight: $constrainedHeight,

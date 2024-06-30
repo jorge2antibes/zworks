@@ -35,7 +35,7 @@ class HorizonsApp extends StatelessWidget {
               // snap: true,
               expandedHeight: 200,
               stretch: true,
-              onStretchTrigger: () async => debugPrint('onStretchTrigger()'),
+              onStretchTrigger: () async => print('onStretchTrigger()'),
               flexibleSpace: FlexibleSpaceBar(
                 stretchModes: [
                   StretchMode.blurBackground,

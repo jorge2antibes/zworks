@@ -151,9 +151,9 @@ class CurrencyEx extends StatelessWidget {
       // onChanged: (price) {
       //   /// TODO Display [formattedPrice] in TextFormField
       //   var formattedPrice = numFormat.format(double.parse(price));
-      //   debugPrint('Formatted $formattedPrice');
+      //   print('Formatted $formattedPrice');
       //   var numSanitized = numSanitizedFormat.parse(price);
-      //   debugPrint('Sanitized: $numSanitized');
+      //   print('Sanitized: $numSanitized');
       //   _subscriptionPriceController.value = TextEditingValue(
       //     text: price,
       //     selection: TextSelection.collapsed(offset: price.length),
@@ -164,7 +164,7 @@ class CurrencyEx extends StatelessWidget {
         /// Set value to 0 if TextFormField value is empty
         if (price == '') price = '0';
         final formattedPrice = numFormat.format(double.parse(price));
-        debugPrint('Formatted $formattedPrice');
+        print('Formatted $formattedPrice');
         _subscriptionPriceController.value = TextEditingValue(
           text: formattedPrice,
           selection: TextSelection.collapsed(offset: formattedPrice.length),
@@ -192,16 +192,16 @@ class _ThingCategoriesVwState extends State<ThingCategoriesVw> {
 
 
   String? _validator(String? value) {
-    debugPrint('_ThingCategoriesVwState: validator called: value: $value');
+    print('_ThingCategoriesVwState: validator called: value: $value');
 
     final oneOrTwoStringsSeparatedBySpace = RegExp(keywords_matcher);
     if (value != null) {
       if (oneOrTwoStringsSeparatedBySpace.hasMatch(value)) {
-        debugPrint(
+        print(
             '_ThingCategoriesVwState: validator called: value: $value: Validated');
         return null;
       } else if (value.isEmpty) {
-        debugPrint(
+        print(
             '_ThingCategoriesVwState: validator called: value: $value: Validated');
         return null;
       } else {
@@ -213,33 +213,33 @@ class _ThingCategoriesVwState extends State<ThingCategoriesVw> {
   }
 
   void _updateThingState() {
-    debugPrint('_ThingCategoriesVwState: _updateThingState()');
+    print('_ThingCategoriesVwState: _updateThingState()');
 
     if (_fieldKey.currentState!.validate()) {
       KeyboardWgt.dismiss(context);
       _controller.text = '';
     }
-    debugPrint(
+    print(
         '_ThingCategoriesVwState: _updateThingState(): thingState: .title: \${thingState.value.title}');
-    debugPrint(
+    print(
         '_ThingCategoriesVwState: _updateThingState(): thingState: .description: \${thingState.value.description}');
-    debugPrint(
+    print(
         '_ThingCategoriesVwState: _updateThingState(): thingState: .categories: \${thingState.value.categories}');
   }
 
   void _saveThingState(String? value) {
-    debugPrint('_ThingCategoriesVwState: _saveThingState()');
+    print('_ThingCategoriesVwState: _saveThingState()');
 
     if (value != null && value.isNotEmpty) {
-      debugPrint(
+      print(
           '_ThingCategoriesVwState: _saveThingState(): value is not null and is not empty');
     }
-    debugPrint(
+    print(
         '_ThingCategoriesVwState: _saveThingState(): value is either null or empty');
   }
 
   void _processor(String value) {
-    debugPrint(
+    print(
         '_ThingCategoriesVwState: _processor(): $value: lenght: ${value.length}');
     _fieldKey.currentState?.validate();
   }

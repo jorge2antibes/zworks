@@ -84,9 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // onChanged: (price) {
             //   /// TODO Display [formattedPrice] in TextFormField
             //   var formattedPrice = numFormat.format(double.parse(price));
-            //   debugPrint('Formatted $formattedPrice');
+            //   print('Formatted $formattedPrice');
             //   var numSanitized = numSanitizedFormat.parse(price);
-            //   debugPrint('Sanitized: $numSanitized');
+            //   print('Sanitized: $numSanitized');
             //   _subscriptionPriceController.value = TextEditingValue(
             //     text: price,
             //     selection: TextSelection.collapsed(offset: price.length),
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               /// Set value to 0 if TextFormField value is empty
               if (price == '') price = '0';
               final formattedPrice = numFormat.format(double.parse(price));
-              debugPrint('Formatted $formattedPrice');
+              print('Formatted $formattedPrice');
               _subscriptionPriceController.value = TextEditingValue(
                 text: formattedPrice,
                 selection:

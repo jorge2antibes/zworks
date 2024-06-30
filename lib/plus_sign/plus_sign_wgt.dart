@@ -96,7 +96,7 @@ class _PlusSignWgtState extends State<PlusSignWgt>
                       //     ? widget.state.onPressPlus
                       //     : null,
                       child: SvgPicture.asset(
-                        'assets/svgs/plus.svg',
+                        'assets/svgs_at_things/plus.svg',
                         width: widget.width * .20,
                         height: widget.height * .20,
                         //todo

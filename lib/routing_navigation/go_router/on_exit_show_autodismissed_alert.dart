@@ -108,12 +108,12 @@ final GoRouter _router = GoRouter(
 class NavigationObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint(
+    print(
       '''NavigationObserver.didPush():
        route.settings.name: ${route.settings.name}, 
        route.arguments: ${route.settings.arguments}''',
     );
-    debugPrint(
+    print(
       '''NavigationObserver.didPush(): 
       previousRoute.settings.name: ${previousRoute?.settings.name}, 
       previousRoute.arguments: ${previousRoute?.settings.arguments}''',
@@ -122,12 +122,12 @@ class NavigationObserver extends NavigatorObserver {
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint(
+    print(
       '''NavigationObserver.didPop(): 
       route.settings.name: ${route.settings.name}, 
       route.settings.arguments: ${route.settings.arguments}''',
     );
-    debugPrint(
+    print(
       '''NavigationObserver.didPop(): 
       previousRoute.settings.name: ${previousRoute?.settings.name}, 
       previousRoute.settings.arguments: ${previousRoute?.settings.arguments}''',
@@ -136,12 +136,12 @@ class NavigationObserver extends NavigatorObserver {
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    debugPrint(
+    print(
       '''NavigationObserver.didReplace(): 
       newRoute.settings.name: ${newRoute?.settings.name}, 
       newRoute.settings.arguments: ${newRoute?.settings.arguments}''',
     );
-    debugPrint(
+    print(
       '''NavigationObserver.didReplace(): 
       oldRoute.settings.name: ${oldRoute?.settings.name}, 
       oldRoute.settings.arguments: ${oldRoute?.settings.arguments}''',
@@ -150,12 +150,12 @@ class NavigationObserver extends NavigatorObserver {
 
   @override
   void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint(
+    print(
       '''NavigationObserver.didStartUserGesture(): 
       route.settings.name: ${route.settings.name}, 
       route.settings.arguments: ${route.settings.arguments}''',
     );
-    debugPrint(
+    print(
       '''NavigationObserver.didStartUserGesture(): 
       previousRoute.settings.name: ${previousRoute?.settings.name}, 
       previousRoute.settings.arguments: ${previousRoute?.settings.arguments}''',
@@ -164,19 +164,19 @@ class NavigationObserver extends NavigatorObserver {
 
   @override
   void didStopUserGesture() {
-    debugPrint(
+    print(
       'NavigationObserver.didStopUserGesture()',
     );
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint(
+    print(
       '''NavigationObserver.didRemove():
        route.settings.name: ${route.settings.name}, 
        route.settings.arguments: ${route.settings.arguments}''',
     );
-    debugPrint(
+    print(
       '''NavigationObserver.didRemove(): 
       previousRoute.settings.name: ${previousRoute?.settings.name}, 
       previousRoute.settings.arguments: ${previousRoute?.settings.arguments}''',

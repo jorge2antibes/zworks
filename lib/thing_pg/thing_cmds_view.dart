@@ -26,7 +26,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/envelope_closed.svg',
+                'assets/svgs_at_things/envelope_closed.svg',
               ),
             ),
           ),
@@ -35,7 +35,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/envelope_opened.svg',
+                'assets/svgs_at_things/envelope_opened.svg',
               ),
             ),
           ),
@@ -44,7 +44,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/envelope_with_mail.svg',
+                'assets/svgs_at_things/envelope_with_mail.svg',
               ),
             ),
           ),
@@ -53,7 +53,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/gallery.svg',
+                'assets/svgs_at_things/gallery.svg',
               ),
             ),
           ),
@@ -62,7 +62,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/camera.svg',
+                'assets/svgs_at_things/camera.svg',
               ),
             ),
           ),
@@ -71,7 +71,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/messages.svg',
+                'assets/svgs_at_things/messages.svg',
               ),
             ),
           ),
@@ -80,7 +80,7 @@ class ThingCmdsView extends StatelessWidget {
               width: cmdWidthHeight,
               height: cmdWidthHeight,
               child: SvgPicture.asset(
-                'assets/svgs/edit.svg',
+                'assets/svgs_at_things/edit.svg',
               ),
             ),
           ),

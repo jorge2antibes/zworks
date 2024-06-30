@@ -17,7 +17,7 @@ class StackedImgsCollapsableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('StackedImgsCollapsableViews: build(): index: $index, cmdsWidth: $rightPadding, infoHeight: $bottomPadding');
+    print('StackedImgsCollapsableViews: build(): index: $index, cmdsWidth: $rightPadding, infoHeight: $bottomPadding');
     return Stack(
       children: [
         Opacity(

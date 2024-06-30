@@ -31,13 +31,13 @@ class InkedImageWgt extends StatelessWidget {
           imgPath,
           cacheHeight: 1000,
           errorBuilder: (context, error, stackTrace) {
-            debugPrint('InkedImageWgt: error: ${error}');
-            debugPrintStack(stackTrace: stackTrace);
+            print('InkedImageWgt: error: ${error}');
+            // debugPrintStack(stackTrace: stackTrace);
             return const Placeholder(color: Colors.blue);
           },
         ).image,
         child: InkWell(
-          onTap: onTap ?? () => debugPrint('InkedImageWgt: build(): InkWell.onTap() called! but no ontap function as parameter'),
+          onTap: onTap ?? () => print('InkedImageWgt: build(): InkWell.onTap() called! but no ontap function as parameter'),
           child: child,
         ),
       ),

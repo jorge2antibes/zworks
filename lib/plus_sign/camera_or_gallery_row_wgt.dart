@@ -40,7 +40,7 @@ class CameraOrGalleryRowWgt extends StatelessWidget {
             //todo
             // onPressed: () async => state.onLeftClickEvent(),
             child: SvgPicture.asset(
-              'assets/svgs/gallery.svg',
+              'assets/svgs_at_things/gallery.svg',
               width: width * .25,
               colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcATop),
             ),
@@ -58,7 +58,7 @@ class CameraOrGalleryRowWgt extends StatelessWidget {
             //todo
             // onPressed: () async => state.onRightClickEvent(),
             child: SvgPicture.asset(
-              'assets/svgs/camera.svg',
+              'assets/svgs_at_things/camera.svg',
               width: width * .28,
               colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcATop),
             ),

@@ -76,6 +76,13 @@ flutter:
     - assets/photos/
     - assets/images/
     - assets/svgs/
+    - assets/svgs_at_things/
+    - assets/svgs_at_animated_svg_docs/
+    - assets/svgs_at_flutter_svg_docs/
+    - assets/svgs_at_flutter_svg_docs/simple/
+    - assets/svgs_at_flutter_svg_docs/w3samples/
+    - assets/svgs_at_flutter_svg_docs/wikimedia/
+    - assets/svgs_at_flutter_svg_docs/deborah_ufw/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

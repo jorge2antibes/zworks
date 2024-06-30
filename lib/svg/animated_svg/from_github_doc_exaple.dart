@@ -4,7 +4,8 @@
 
 import 'package:animated_svg/animated_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+// import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const ExampleApp());
@@ -62,7 +63,7 @@ class _MediaPlayerState extends State<MediaPlayer> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SvgPicture.asset(
-          'assets/music.svg',
+          'assets/svgs_at_animated_svg_docs/music.svg',
           height: 240,
           width: 240,
         ),
@@ -94,11 +95,11 @@ class _MediaPlayerState extends State<MediaPlayer> {
             const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     '02:37',
                     style: TextStyle(
@@ -123,7 +124,7 @@ class _MediaPlayerState extends State<MediaPlayer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              'assets/backward_5.svg',
+              'assets/svgs_at_animated_svg_docs/backward_5.svg',
               height: 40,
               width: 40,
             ),
@@ -133,17 +134,20 @@ class _MediaPlayerState extends State<MediaPlayer> {
             // Call the AnimatedSvg widget anywhere in your widget tree.
             AnimatedSvg(
               controller: controller,
-              size: 80,
+              size: 40,
               children: [
-                SvgPicture.asset('assets/play.svg'),
-                SvgPicture.asset('assets/pause.svg'),
+                SvgPicture.asset('assets/svgs_at_things/envelope_closed.svg',),
+                // SvgPicture.asset('assets/svgs_at_things/envelope_opened.svg'),
+                SvgPicture.asset('assets/svgs_at_things/envelope_with_mail.svg'),
+                // SvgPicture.asset('assets/svgs_at_animated_svg_docs/play.svg'),
+                // SvgPicture.asset('assets/svgs_at_animated_svg_docs/pause.svg'),
               ],
             ),
             const SizedBox(
               width: 20,
             ),
             SvgPicture.asset(
-              'assets/forward_5.svg',
+              'assets/svgs_at_animated_svg_docs/forward_5.svg',
               height: 40,
               width: 40,
             ),

@@ -17,7 +17,7 @@ class StackedImgsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('StackedImgsViews: build(): index: $index, cmdsWidth: $rightPadding, infoHeight: $bottomPadding');
+    print('StackedImgsViews: build(): index: $index, cmdsWidth: $rightPadding, infoHeight: $bottomPadding');
     return Stack(
       children: [
         Opacity(

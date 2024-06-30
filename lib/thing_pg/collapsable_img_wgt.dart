@@ -54,7 +54,7 @@ class CollapsableImgWgt extends StatelessWidget {
         int? cacheWidth;
         int? cacheHeight;
 
-        debugPrint('''CollapsableImgWgt:
+        print('''CollapsableImgWgt:
             Constrains:
             minWidth: ${constraints.minWidth}, 
             maxWidth: ${constraints.maxWidth},
@@ -75,7 +75,7 @@ class CollapsableImgWgt extends StatelessWidget {
           cacheHeight = constrainedHeight.renderSize(context);
         }
 
-        debugPrint('''CollapsableImgWgt:
+        print('''CollapsableImgWgt:
             Geometries: 
             constrainedWidth: $constrainedWidth, 
             constrainedHeight: $constrainedHeight,
