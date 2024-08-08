@@ -9,26 +9,15 @@ import 'description_info_wgt.dart';
 import 'this_thing_cmds_wgt.dart';
 import 'this_thing_imgs_vw.dart';
 
-void main() {
-  initGetIt();
-  runApp(MyApp());
-}
-
 final goGet = GetIt.I;
 
 void initGetIt() {
   goGet.registerSingleton<ScaleState>(ScaleState(false));
 }
 
-class ScaleState extends ValueNotifier<bool> {
-  ScaleState(super.scaleUp);
-
-  bool get scaleIn => value = true;
-  bool get scaleOut => value = false;
-  bool get shouldScaleIn => value;
-  bool get shouldScaleOut => !value;
-
-  void set scaleIn(bool newVal) => value = newVal;
+void main() {
+  initGetIt();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -187,4 +176,15 @@ class ThisThingPg extends StatelessWidget with GetItMixin {
       ),
     );
   }
+}
+
+class ScaleState extends ValueNotifier<bool> {
+  ScaleState(super.scaleUp);
+
+  bool get scaleIn => value = true;
+  bool get scaleOut => value = false;
+  bool get shouldScaleIn => value;
+  bool get shouldScaleOut => !value;
+
+  void set scaleIn(bool newVal) => value = newVal;
 }

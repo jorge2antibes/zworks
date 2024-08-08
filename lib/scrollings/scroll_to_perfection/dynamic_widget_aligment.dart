@@ -27,14 +27,27 @@ class TheTest extends StatelessWidget {
       appBar: AppBar(
         title: Text('dynamic aligment of image'),
       ),
-      body: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return items.elementAt(index);
-          ///type 'Null' is not a subtype of type 'RenderBox' in type cast
-          // return SingleImg(img: items.elementAt(index));
-        },
+      body: Center(
+        child: Container(
+          width: 250,
+          child: ListView(
+            children: [
+              SingleImg(globalKey: GlobalKey(), img: 'assets/photos/00.png'),
+              // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/00.png'),
+              // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/00.png'),
+            ],
+            // children: items.toList(),
+          ),
+          // child: ListView.builder(
+          //   scrollDirection: Axis.vertical,
+          //   itemCount: items.length,
+          //   itemBuilder: (context, index) {
+          //     return items.elementAt(index);
+          //     ///type 'Null' is not a subtype of type 'RenderBox' in type cast
+          //     // return SingleImg(img: items.elementAt(index));
+          //   },
+          // ),
+        ),
       ),
     );
   }
@@ -61,20 +74,28 @@ class TheTest extends StatelessWidget {
 /// Combining everything into an example:
 /// In the following example, you'll see an overlay that follows a widget inside a ListView and shares the same height.
 class SingleImg extends StatelessWidget {
-   SingleImg({required this.globalKey, required this.img}): super(key: globalKey);
+  SingleImg({required this.globalKey, required this.img}) : super(key: globalKey);
 
   final String img;
   final GlobalKey globalKey;
 
   @override
   Widget build(BuildContext context) {
-    final RenderBox? renderObject = globalKey.currentContext?.findRenderObject() as RenderBox?;
-    final offsetY = renderObject?.localToGlobal(Offset.zero).dy ?? 0;
+    final RenderBox? renderBox = globalKey.currentContext?.findRenderObject() as RenderBox?;
+    final offsetY = renderBox?.localToGlobal(Offset.zero).dy ?? 0;
     final deviceHeight = MediaQuery.of(context).size.height;
     final relativePosition = offsetY / deviceHeight;
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          alignment: Alignment(0, relativePosition - 0.5),
+          image: AssetImage(img),
+        ),
+      ),
+    );
     return Image.asset(
-      height: 300,
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
       img,
     );
   }
@@ -92,13 +113,42 @@ class SingleImg extends StatelessWidget {
 //   'assets/photos/7.jpg',
 // };
 
-final items = <Widget>{
-  SingleImg(globalKey: GlobalKey(), img: 'assets/photos/0.jpg'),
-  SingleImg(globalKey: GlobalKey(), img: 'assets/photos/1.jpg'),
-  SingleImg(globalKey: GlobalKey(), img: 'assets/photos/2.jpg'),
-  // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/3.jpg'),
-  // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/4.jpg'),
-  // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/5.jpg'),
-  // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/6.jpg'),
-  // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/7.jpg'),
-};
+// final items = <Widget>{
+//   SingleImg(globalKey: GlobalKey(), img: 'assets/photos/0.jpg'),
+//   SingleImg(globalKey: GlobalKey(), img: 'assets/photos/1.jpg'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/2.jpg'),//lost connection to device. the dart compiler exited unexpectedly
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/3.jpg'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/4.jpg'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/5.jpg'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/6.jpg'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/7.jpg'),
+// };
+
+// final items = <Widget>{
+//   SingleImg(globalKey: GlobalKey(), img: 'assets/photos/00.png'),
+//   SingleImg(globalKey: GlobalKey(), img: 'assets/photos/01.png'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/02.png'), //lost connection to device. the dart compiler exited unexpectedly
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/03.png'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/04.png'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/05.png'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/06.png'),
+//   // SingleImg(globalKey: GlobalKey(), img: 'assets/photos/07.png'),
+// };
+
+// final items = <Widget>{
+//   FlutterLogo(key: GlobalKey(), size: 300),
+//   FlutterLogo(key: GlobalKey(), size: 300),
+//   FlutterLogo(key: GlobalKey(), size: 300),
+//   FlutterLogo(key: GlobalKey(), size: 300),
+//   FlutterLogo(key: GlobalKey(), size: 300),
+//   FlutterLogo(key: GlobalKey(), size: 300),
+// };
+
+// final items = <Widget>{
+//   FlutterLogo(),
+//   FlutterLogo(),
+//   FlutterLogo(),
+//   FlutterLogo(),
+//   FlutterLogo(),
+//   FlutterLogo(),
+// };
