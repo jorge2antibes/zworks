@@ -1,0 +1,7 @@
+
+# Put the App Resource Bundle (.arb) input files in ${FLUTTER_PROJECT}/lib/l10n. The .arb provide localization resources for your app
+# Set the English template as app_en.arb
+# Told Flutter to generate localizations in the app_localizations.dart file
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
