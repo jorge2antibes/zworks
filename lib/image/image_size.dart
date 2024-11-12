@@ -46,7 +46,7 @@ class MyHomePage extends StatelessWidget {
   }
 
   // final pathToImage = 'https://i.stack.imgur.com/lkd0a.png';
-  final pathToImage = 'assets/images/20240131_103828.jpg';
+  final pathToImage = 'assets/images/img.png';
 
   // final pathToImage =
   //     'https://dartpad-workshops-io2021.web.app/getting_started_with_slivers/assets/header.jpeg';
