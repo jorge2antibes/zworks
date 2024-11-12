@@ -1,6 +1,6 @@
 # sbox1
 
-A new Flutter project.
+This is a multi main() function project that I use to play around with some new feature I might work on or as to prototype some algorithm, function, model...
 
 ## Getting Started
 
